@@ -1,0 +1,23 @@
+{
+  "name": "gymrl",
+  "version": "1.2.3",
+  "description": "OpenAI style Gym for javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "ia",
+    "gym",
+    "rl",
+    "reinforcement",
+    "learning"
+  ],
+  "author": "Seyronh",
+  "license": "ISC",
+  "dependencies": {
+    "2048game": "^1.0.9",
+    "four-in-a-row": "^1.0.1"
+  }
+}
