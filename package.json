@@ -3,6 +3,11 @@
   "version": "1.2.3",
   "description": "OpenAI style Gym for javascript",
   "main": "index.js",
+  "homepage": "https://github.com/Seyronh/gymrl#readme",
+  "bugs":{
+    "url":"https://github.com/Seyronh/gymrl/issues"
+  },
+  "repository": "https://github.com/Seyronh/gymrl",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,7 +20,7 @@
     "learning"
   ],
   "author": "Seyronh",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "2048game": "^1.0.9",
     "four-in-a-row": "^1.0.1"
