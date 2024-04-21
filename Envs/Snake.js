@@ -4,9 +4,9 @@ class Snake {
         this.doublesize = this.size * this.size;
         this.observation_shape = [8];
         this.action_size = 4;
-        this.reiniciar()
+        this.reset()
     }
-    sampleAction(){
+    static sampleAction(){
         return Math.floor(Math.random()*this.action_size);
     }
     step(accion){
@@ -104,7 +104,7 @@ class Snake {
         }
         return libres;
     }
-    reiniciar(){
+    reset(){
         this.longitud = 1;
         this.state = []
         for(let i = 0;i<this.size;i++){
@@ -142,23 +142,3 @@ class Snake {
     }
 }
 module.exports = Snake;
-/* JUGAR
-let partida = new Snake();
-partida.render()
-for await (const line of console) {
-    let resultado = 0;
-    if(line == "w"){
-        resultado = partida.mover(0)
-    } else
-    if(line == "s"){
-        resultado = partida.mover(1)
-    } else
-    if(line == "d"){
-        resultado = partida.mover(2)
-    } else
-    if(line == "a"){
-        resultado = partida.mover(3)
-    }
-    if(resultado == -1) partida.reiniciar()
-    partida.render()
-}*/

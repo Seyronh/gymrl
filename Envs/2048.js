@@ -7,7 +7,7 @@ class TwoThousandfortyeight {
         this.partida = new game.partida(false)
         this.reset();
     }
-    sampleAction(){
+    static sampleAction(){
         return Math.floor(Math.random()*this.action_size);
     }
     step(action){

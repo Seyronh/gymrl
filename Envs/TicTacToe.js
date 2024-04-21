@@ -47,7 +47,7 @@ class TicTacToe {
         this.player = player ? 2 : 1;
         this.reset();
     }
-    sampleAction(){
+    static sampleAction(){
         return Math.floor(Math.random()*this.action_size);
     }
     step(action){

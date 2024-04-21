@@ -6,7 +6,7 @@ class Fourinarow {
         this.partida = new Game();
         this.reset();
     }
-    sampleAction(){
+    static sampleAction(){
         return Math.floor(Math.random()*this.action_size);
     }
     step(action){
