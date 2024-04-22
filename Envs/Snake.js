@@ -123,15 +123,15 @@ class Snake {
             let linea = "▍"
             for(let x = 0;x<this.state[y].length;x++){
                 if(x == this.posicion[0] && y == this.posicion[1]){
-                    linea += "O";
+                    linea += "\x1b[32mO\x1b[0m";
                 } else
                 if(this.state[y][x] == 0){
                     linea += " ";
                 } else
                 if(this.state[y][x] == -1){
-                    linea += "□";
+                    linea += "\x1b[31m□\x1b[0m";
                 } else {
-                    linea += "+";
+                    linea += "\x1b[32m+\x1b[0m";
                 }
             }
             linea += "▐";
