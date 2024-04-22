@@ -78,7 +78,7 @@ The following methods are available in all environments:
 
 ## More Info About the Environments
 
-This section is a work in progress. Stay tuned for more information about each environment!
+You can see more info about the enviroments in our [wiki](https://github.com/Seyronh/gymrl/wiki)
 
 ## Contributing to GymRL
 
