@@ -8,7 +8,7 @@ class TwoThousandfortyeight {
         this.reset();
     }
     static sampleAction(){
-        return Math.floor(Math.random()*this.action_size);
+        return Math.floor(Math.random()*4);
     }
     step(action){
         let actions = ["arriba","abajo","izquierda","derecha"]

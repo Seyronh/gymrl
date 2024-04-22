@@ -48,22 +48,30 @@ class TicTacToe {
         this.reset();
     }
     static sampleAction(){
-        return Math.floor(Math.random()*this.action_size);
+        return Math.floor(Math.random()*9);
     }
     step(action){
         let actiony = Math.floor(action/3);
         let actionx = action%3;
         let info;
         if(this.state[actiony][actionx] == 0){
-            this.state[actiony][actionx] = this.player;
+            this.state[actiony][actionx] = this.turn+1;
             info = this.get_info();
             info[1] = 0;
+            this.turn = (this.turn+1)%2
         } else {
             info = this.get_info();
             info[1] = 1;
         }
         let obs = this.get_obs();
-        let reward = info[0] == this.player ? 1 : 0;
+        let reward;
+        if(info[0] == this.player){
+            reward = 1;
+        } else if(info[0] == 'Draw' || info[0] == "In progress"){
+            reward = 0;
+        } else {
+            reward = -1;
+        }
         let done = info[0] == 'Draw' || info[0] == 1 || info[0] == 2;
         return [obs,reward,done,info]
     }
@@ -71,7 +79,7 @@ class TicTacToe {
         return TicTacToe.OneHot(this.state);
     }
     get_info(){
-        return [this.Status(this.state)];
+        return [TicTacToe.Status(this.state)];
     }
     reset(){
         this.turn = 0;
@@ -83,22 +91,22 @@ class TicTacToe {
         return [this.get_obs(),this.get_info()]
     }
     render(){
-        console.log("-+-+-")
-        let linea = ";"
+        let texto = "+-+-+-+\n";
         for(let y = 0;y<this.state.length;y++){
-            linea = [];
+            let linea = "|";
             for(let x = 0;x<this.state[y].length;x++){
                 if(this.state[y][x] == 0){
-                    linea.push("  ");
+                    linea += " ";
                 } else if(this.state[y][x] == 1) {
-                    linea.push("X");
+                    linea += "X";
                 } else {
-                    linea.push("O");
+                    linea += "O";
                 }
+                linea += "|";
             }
-            console.log(linea.join(""));
-            console.log("-+-+-")
+            texto += linea+ "\n+-+-+-+\n";
         }
+        console.log(texto)
     }
 }
 module.exports = TicTacToe;

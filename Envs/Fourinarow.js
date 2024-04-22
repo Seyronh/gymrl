@@ -7,7 +7,7 @@ class Fourinarow {
         this.reset();
     }
     static sampleAction(){
-        return Math.floor(Math.random()*this.action_size);
+        return Math.floor(Math.random()*7);
     }
     step(action){
         const moveResult = this.partida.playMove(action);

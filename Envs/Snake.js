@@ -7,7 +7,7 @@ class Snake {
         this.reset()
     }
     static sampleAction(){
-        return Math.floor(Math.random()*this.action_size);
+        return Math.floor(Math.random()*4);
     }
     step(accion){
         let resultado = 0;
