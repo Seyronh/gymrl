@@ -91,22 +91,22 @@ class TicTacToe {
         return [this.get_obs(),this.get_info()]
     }
     render(){
-        let texto = "+-+-+-+\n";
+        let text = "+-+-+-+\n";
         for(let y = 0;y<this.state.length;y++){
-            let linea = "|";
+            let line = "|";
             for(let x = 0;x<this.state[y].length;x++){
                 if(this.state[y][x] == 0){
-                    linea += " ";
+                    line += " ";
                 } else if(this.state[y][x] == 1) {
-                    linea += "X";
+                    line += "X";
                 } else {
-                    linea += "O";
+                    line += "O";
                 }
-                linea += "|";
+                line += "|";
             }
-            texto += linea+ "\n+-+-+-+\n";
+            text += line+ "\n+-+-+-+\n";
         }
-        console.log(texto)
+        console.log(text)
     }
 }
 module.exports = TicTacToe;

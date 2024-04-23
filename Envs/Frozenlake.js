@@ -1,7 +1,7 @@
 class Frozenlake {
     static TextToInt(state){
-        let medio = state.map(e => e.split(""));
-        let final = medio.flat(Infinity).map(e => e=='S' ? 0 : e=='F' ? 1 : e=='H' ? 2 : 3)
+        let middle = state.map(e => e.split(""));
+        let final = middle.flat(Infinity).map(e => e=='S' ? 0 : e=='F' ? 1 : e=='H' ? 2 : 3)
         return final;
     }
     constructor(desc,map_name,is_slippery){
@@ -24,21 +24,21 @@ class Frozenlake {
     }
     step(action){
         if(this.is_slippery){
-            let acciones = [];
+            let actions = [];
             if(action==0 && this.playerx > 0){
-                acciones = [0,1,3];
+                actions = [0,1,3];
             }
             if(action==1 && this.playery<this.height){
-                acciones = [0,1,2];
+                actions = [0,1,2];
             }
             if(action==2 && this.playerx<this.width ){
-                acciones = [1,2,3];
+                actions = [1,2,3];
             }
             if(action==3 && this.playery>0){
-                acciones = [0,2,3];
+                actions = [0,2,3];
             }
-            let accion = acciones[Math.floor(acciones.length*Math.random())];
-            this.move(accion);
+            let realaction = actions[Math.floor(actions.length*Math.random())];
+            this.move(realaction);
         } else {
             this.move(action)
         }
@@ -113,20 +113,20 @@ class Frozenlake {
         return [this.get_obs(),this.get_info()]
     }
     render(){
-        let linea = "";
+        let line = "";
         for(let i = 0;i<this.state.length;i++){
             if(i%(this.height+1)==0){
-                console.log(linea);
-                linea = "";
+                console.log(line);
+                line = "";
             }
             if(this.get_obs() == i){
-                linea += "P"
+                line += "P"
             } else {
                 let representation = ['S','F','H','G']
-                linea += representation[this.state[i]]
+                lina += representation[this.state[i]]
             }
         }
-        console.log(linea)
+        console.log(line)
         console.log("-------------")
     }
 }

@@ -4,7 +4,7 @@ class TwoThousandfortyeight {
         this.observation_shape = [16];
         this.action_size = 4;
         this.lastscore = 0;
-        this.partida = new game.partida(false)
+        this.match = new game.partida(false)
         this.reset();
     }
     static sampleAction(){
@@ -12,30 +12,30 @@ class TwoThousandfortyeight {
     }
     step(action){
         let actions = ["arriba","abajo","izquierda","derecha"]
-        let mov = this.partida.mover(actions[action]);
+        let mov = this.match.mover(actions[action]);
         let obs = this.get_obs()
-        let reward = this.partida.puntuacion-this.lastscore;
+        let reward = this.match.puntuacion-this.lastscore;
         let max = Math.max(...obs)
         if(obs.indexOf(max) == 0 || obs.indexOf(max) == 3 || obs.indexOf(max) == 12 || obs.indexOf(max) == 15){
             reward += 100;
         }
         let done = mov == `Has perdido porfavor reinicia la partida.` || mov == `Has ganado porfavor reinicia la partida.`
         let info = this.get_info()
-        this.lastscore = this.partida.puntuacion;
+        this.lastscore = this.match.puntuacion;
         return [obs,reward,done,info]
     }
     get_obs(){
-        return this.partida.estado(true);
+        return this.match.estado(true);
     }
     get_info(){
         return [];
     }
     reset(){
-        this.partida.reiniciar();
+        this.match.reiniciar();
         return [this.get_obs(),this.get_info()]
     }
     render(){
-        console.log(this.partida.estado(false))
+        console.log(this.match.estado(false))
     }
 }
 module.exports = TwoThousandfortyeight;
