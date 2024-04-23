@@ -1,7 +1,7 @@
 const {Game} = require('four-in-a-row')
 class Fourinarow {
     constructor(){
-        this.observation_shape = [7,7,7,7,7,7];
+        this.observation_shape = [6,7];
         this.action_size = 7;
         this.partida = new Game();
         this.reset();
