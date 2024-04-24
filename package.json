@@ -1,6 +1,6 @@
 {
   "name": "gymrl",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "OpenAI style Gym for javascript",
   "main": "./dist/index.js",
   "homepage": "https://github.com/Seyronh/gymrl#readme",
@@ -12,7 +12,13 @@
     "build": "bun build ./index.js --outdir ./dist",
     "test": "bun test"
   },
-  "files":["LICENSE","package.json","package-lock.json","README.md","dist"],
+  "files": [
+    "LICENSE",
+    "package.json",
+    "package-lock.json",
+    "README.md",
+    "dist"
+  ],
   "keywords": [
     "ai",
     "ia",
