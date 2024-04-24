@@ -130,4 +130,4 @@ class Frozenlake {
         console.log("-------------")
     }
 }
-module.exports = Frozenlake;
+export default Frozenlake;

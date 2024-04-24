@@ -38,4 +38,4 @@ class TwoThousandfortyeight {
         console.log(this.match.estado(false))
     }
 }
-module.exports = TwoThousandfortyeight;
+export default TwoThousandfortyeight;

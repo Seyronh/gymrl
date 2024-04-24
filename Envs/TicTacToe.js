@@ -36,7 +36,7 @@ class TicTacToe {
         return [X,O,E];
     }
     constructor(player){
-        this.observation_shape = [3,3,3];
+        this.observation_shape = [3,9];
         this.action_size = 9;
         this.state = [
             [0, 0, 0],
@@ -109,4 +109,4 @@ class TicTacToe {
         console.log(text)
     }
 }
-module.exports = TicTacToe;
+export default TicTacToe;

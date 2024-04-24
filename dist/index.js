@@ -32,147 +32,6 @@ var __export = (target, all) => {
 };
 var __esm = (fn, res) => () => (fn && (res = fn(fn = 0)), res);
 
-// Envs/Frozenlake.js
-var require_Frozenlake = __commonJS((exports, module) => {
-  class Frozenlake {
-    static TextToInt(state) {
-      let middle = state.map((e) => e.split(""));
-      let final = middle.flat(Infinity).map((e) => e == "S" ? 0 : e == "F" ? 1 : e == "H" ? 2 : 3);
-      return final;
-    }
-    constructor(desc, map_name, is_slippery) {
-      this.observation_shape = [1];
-      this.action_size = 4;
-      this.is_slippery = is_slippery;
-      this.desc = desc;
-      this.map_name = map_name;
-      this.height;
-      this.width;
-      this.state = [];
-      this.playerx;
-      this.playery;
-      this.goalx;
-      this.goaly;
-      this.reset();
-    }
-    static sampleAction() {
-      return Math.floor(Math.random() * 4);
-    }
-    step(action) {
-      if (this.is_slippery) {
-        let actions = [];
-        if (action == 0 && this.playerx > 0) {
-          actions = [0, 1, 3];
-        }
-        if (action == 1 && this.playery < this.height) {
-          actions = [0, 1, 2];
-        }
-        if (action == 2 && this.playerx < this.width) {
-          actions = [1, 2, 3];
-        }
-        if (action == 3 && this.playery > 0) {
-          actions = [0, 2, 3];
-        }
-        let realaction = actions[Math.floor(actions.length * Math.random())];
-        this.move(realaction);
-      } else {
-        this.move(action);
-      }
-      let obs = this.get_obs();
-      let reward = this.state[obs] == 3 ? 1 : 0;
-      let done = this.state[obs] == 3 || this.state[obs] == 2;
-      let info = this.get_info();
-      return [obs, reward, done, info];
-    }
-    move(action) {
-      if (action == 0 && this.playerx > 0)
-        this.playerx -= 1;
-      if (action == 1 && this.playery < this.height)
-        this.playery += 1;
-      if (action == 2 && this.playerx < this.width)
-        this.playerx += 1;
-      if (action == 3 && this.playery > 0)
-        this.playery -= 1;
-    }
-    get_obs() {
-      return [this.playery * (this.height + 1) + this.playerx];
-    }
-    get_info() {
-      return [Math.hypot(this.playerx - this.goalx, this.playery - this.goaly)];
-    }
-    reset() {
-      if (this.desc && this.desc.length > 0) {
-        this.state = Frozenlake.TextToInt(this.desc.flat(Infinity));
-        for (let y = 0;y < this.desc.length; y++) {
-          for (let x = 0;x < this.desc[y].length; x++) {
-            if (this.desc[y][x] == "S") {
-              this.playerx = x;
-              this.playery = y;
-            }
-            if (this.desc[y][x] == "G") {
-              this.goalx = x;
-              this.goaly = y;
-            }
-          }
-        }
-        this.height = this.desc.length - 1;
-        this.width = this.desc[0].length - 1;
-      } else {
-        if (this.map_name == "4x4") {
-          this.state = Frozenlake.TextToInt([
-            "SFFF",
-            "FHFH",
-            "FFFH",
-            "HFFG"
-          ]);
-          this.playerx = 0;
-          this.playery = 0;
-          this.goalx = 3;
-          this.goaly = 3;
-          this.height = 3;
-          this.width = 3;
-        } else {
-          this.state = Frozenlake.TextToInt([
-            "SFFFFFFF",
-            "FFFFFFFF",
-            "FFFHFFFF",
-            "FFFFFHFF",
-            "FFFHFFFF",
-            "FHHFFFHF",
-            "FHFFHFHF",
-            "FFFHFFFG"
-          ]);
-          this.playerx = 0;
-          this.playery = 0;
-          this.goalx = 7;
-          this.goaly = 7;
-          this.height = 7;
-          this.width = 7;
-        }
-      }
-      return [this.get_obs(), this.get_info()];
-    }
-    render() {
-      let line = "";
-      for (let i = 0;i < this.state.length; i++) {
-        if (i % (this.height + 1) == 0) {
-          console.log(line);
-          line = "";
-        }
-        if (this.get_obs() == i) {
-          line += "P";
-        } else {
-          let representation = ["S", "F", "H", "G"];
-          lina += representation[this.state[i]];
-        }
-      }
-      console.log(line);
-      console.log("-------------");
-    }
-  }
-  module.exports = Frozenlake;
-});
-
 // node_modules/2048_functional/dist/rotateMatrix.js
 var require_rotateMatrix = __commonJS((exports) => {
   var _toConsumableArray = function(arr) {
@@ -518,165 +377,6 @@ var require_2048game = __commonJS((exports, module) => {
   };
 });
 
-// Envs/2048.js
-var require_2048 = __commonJS((exports, module) => {
-  var game = require_2048game();
-
-  class TwoThousandfortyeight {
-    constructor() {
-      this.observation_shape = [16];
-      this.action_size = 4;
-      this.lastscore = 0;
-      this.match = new game.partida(false);
-      this.reset();
-    }
-    static sampleAction() {
-      return Math.floor(Math.random() * 4);
-    }
-    step(action) {
-      let actions = ["arriba", "abajo", "izquierda", "derecha"];
-      let mov = this.match.mover(actions[action]);
-      let obs = this.get_obs();
-      let reward = this.match.puntuacion - this.lastscore;
-      let max = Math.max(...obs);
-      if (obs.indexOf(max) == 0 || obs.indexOf(max) == 3 || obs.indexOf(max) == 12 || obs.indexOf(max) == 15) {
-        reward += 100;
-      }
-      let done = mov == `Has perdido porfavor reinicia la partida.` || mov == `Has ganado porfavor reinicia la partida.`;
-      let info = this.get_info();
-      this.lastscore = this.match.puntuacion;
-      return [obs, reward, done, info];
-    }
-    get_obs() {
-      return this.match.estado(true);
-    }
-    get_info() {
-      return [];
-    }
-    reset() {
-      this.match.reiniciar();
-      return [this.get_obs(), this.get_info()];
-    }
-    render() {
-      console.log(this.match.estado(false));
-    }
-  }
-  module.exports = TwoThousandfortyeight;
-});
-
-// Envs/TicTacToe.js
-var require_TicTacToe = __commonJS((exports, module) => {
-  class TicTacToe {
-    static Status(board) {
-      for (let i = 0;i < 3; i++) {
-        if (board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
-          if (board[i][0] !== 0) {
-            return board[i][0];
-          }
-        }
-        if (board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
-          if (board[0][i] !== 0) {
-            return board[0][i];
-          }
-        }
-      }
-      if (board[0][0] === board[1][1] && board[1][1] === board[2][2] || board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
-        if (board[1][1] !== 0) {
-          return board[1][1];
-        }
-      }
-      for (let i = 0;i < 3; i++) {
-        for (let j = 0;j < 3; j++) {
-          if (board[i][j] === 0) {
-            return "In progress";
-          }
-        }
-      }
-      return "Draw";
-    }
-    static OneHot(state) {
-      let X = state.map((x) => x == 1 ? 1 : 0);
-      let O = state.map((x) => x == 2 ? 1 : 0);
-      let E = state.map((x) => x == 0 ? 1 : 0);
-      return [X, O, E];
-    }
-    constructor(player) {
-      this.observation_shape = [3, 3, 3];
-      this.action_size = 9;
-      this.state = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]
-      ];
-      this.turn = 0;
-      this.player = player ? 2 : 1;
-      this.reset();
-    }
-    static sampleAction() {
-      return Math.floor(Math.random() * 9);
-    }
-    step(action) {
-      let actiony = Math.floor(action / 3);
-      let actionx = action % 3;
-      let info;
-      if (this.state[actiony][actionx] == 0) {
-        this.state[actiony][actionx] = this.turn + 1;
-        info = this.get_info();
-        info[1] = 0;
-        this.turn = (this.turn + 1) % 2;
-      } else {
-        info = this.get_info();
-        info[1] = 1;
-      }
-      let obs = this.get_obs();
-      let reward;
-      if (info[0] == this.player) {
-        reward = 1;
-      } else if (info[0] == "Draw" || info[0] == "In progress") {
-        reward = 0;
-      } else {
-        reward = -1;
-      }
-      let done = info[0] == "Draw" || info[0] == 1 || info[0] == 2;
-      return [obs, reward, done, info];
-    }
-    get_obs() {
-      return TicTacToe.OneHot(this.state);
-    }
-    get_info() {
-      return [TicTacToe.Status(this.state)];
-    }
-    reset() {
-      this.turn = 0;
-      this.state = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]
-      ];
-      return [this.get_obs(), this.get_info()];
-    }
-    render() {
-      let text = "+-+-+-+\n";
-      for (let y = 0;y < this.state.length; y++) {
-        let line = "|";
-        for (let x = 0;x < this.state[y].length; x++) {
-          if (this.state[y][x] == 0) {
-            line += " ";
-          } else if (this.state[y][x] == 1) {
-            line += "X";
-          } else {
-            line += "O";
-          }
-          line += "|";
-        }
-        text += line + "\n+-+-+-+\n";
-      }
-      console.log(text);
-    }
-  }
-  module.exports = TicTacToe;
-});
-
 // node_modules/four-in-a-row/src/constants.js
 var GameStatus, MoveStatus, PlayerColor, BoardDimensions, BoardToken;
 var init_constants = __esm(() => {
@@ -984,222 +684,508 @@ var init_src = __esm(() => {
   init_constants();
 });
 
-// Envs/Fourinarow.js
-var require_Fourinarow = __commonJS((exports, module) => {
-  var { Game: Game2 } = (init_src(), __toCommonJS(exports_src));
-
-  class Fourinarow {
-    constructor() {
-      this.observation_shape = [6, 7];
-      this.action_size = 7;
-      this.match = new Game2;
-      this.reset();
-    }
-    static sampleAction() {
-      return Math.floor(Math.random() * 7);
-    }
-    step(action) {
-      const moveResult = this.match.playMove(action);
-      let obs = this.get_obs();
-      let reward = 0;
-      if (moveResult.status == "invalid") {
-        reward -= 1;
-      } else if (moveResult.status == "win") {
-        reward += 1;
+// Envs/Frozenlake.js
+class Frozenlake {
+  static TextToInt(state) {
+    let middle = state.map((e) => e.split(""));
+    let final = middle.flat(Infinity).map((e) => e == "S" ? 0 : e == "F" ? 1 : e == "H" ? 2 : 3);
+    return final;
+  }
+  constructor(desc, map_name, is_slippery) {
+    this.observation_shape = [1];
+    this.action_size = 4;
+    this.is_slippery = is_slippery;
+    this.desc = desc;
+    this.map_name = map_name;
+    this.height;
+    this.width;
+    this.state = [];
+    this.playerx;
+    this.playery;
+    this.goalx;
+    this.goaly;
+    this.reset();
+  }
+  static sampleAction() {
+    return Math.floor(Math.random() * 4);
+  }
+  step(action) {
+    if (this.is_slippery) {
+      let actions = [];
+      if (action == 0 && this.playerx > 0) {
+        actions = [0, 1, 3];
       }
-      let done = moveResult.status == "draw" || moveResult.status == "win";
-      let info = this.get_info();
-      return [obs, reward, done, info];
+      if (action == 1 && this.playery < this.height) {
+        actions = [0, 1, 2];
+      }
+      if (action == 2 && this.playerx < this.width) {
+        actions = [1, 2, 3];
+      }
+      if (action == 3 && this.playery > 0) {
+        actions = [0, 2, 3];
+      }
+      let realaction = actions[Math.floor(actions.length * Math.random())];
+      this.move(realaction);
+    } else {
+      this.move(action);
     }
-    get_obs() {
-      return this.match.currentBoard.map((e) => Object.values(e));
-    }
-    get_info() {
-      return [this.match.status, this.match.currentTurn];
-    }
-    reset() {
-      this.match.reset();
-      return [this.get_obs(), this.get_info()];
-    }
-    render() {
-      let result = "";
-      let status = this.get_obs();
-      for (let y = 0;y < status.length; y++) {
-        let line = "";
-        for (let x = 0;x < status[y].length; x++) {
-          if (status[y][x] == 0) {
-            line += "\u26AA";
-          } else if (status[y][x] == 1) {
-            line += "\uD83D\uDFE1";
-          } else {
-            line += "\uD83D\uDD34";
+    let obs = this.get_obs();
+    let reward = this.state[obs] == 3 ? 1 : 0;
+    let done = this.state[obs] == 3 || this.state[obs] == 2;
+    let info = this.get_info();
+    return [obs, reward, done, info];
+  }
+  move(action) {
+    if (action == 0 && this.playerx > 0)
+      this.playerx -= 1;
+    if (action == 1 && this.playery < this.height)
+      this.playery += 1;
+    if (action == 2 && this.playerx < this.width)
+      this.playerx += 1;
+    if (action == 3 && this.playery > 0)
+      this.playery -= 1;
+  }
+  get_obs() {
+    return [this.playery * (this.height + 1) + this.playerx];
+  }
+  get_info() {
+    return [Math.hypot(this.playerx - this.goalx, this.playery - this.goaly)];
+  }
+  reset() {
+    if (this.desc && this.desc.length > 0) {
+      this.state = Frozenlake.TextToInt(this.desc.flat(Infinity));
+      for (let y = 0;y < this.desc.length; y++) {
+        for (let x = 0;x < this.desc[y].length; x++) {
+          if (this.desc[y][x] == "S") {
+            this.playerx = x;
+            this.playery = y;
+          }
+          if (this.desc[y][x] == "G") {
+            this.goalx = x;
+            this.goaly = y;
           }
         }
-        result += line + "\n";
       }
-      result += "-----------------";
-      console.log(result);
+      this.height = this.desc.length - 1;
+      this.width = this.desc[0].length - 1;
+    } else {
+      if (this.map_name == "4x4") {
+        this.state = Frozenlake.TextToInt([
+          "SFFF",
+          "FHFH",
+          "FFFH",
+          "HFFG"
+        ]);
+        this.playerx = 0;
+        this.playery = 0;
+        this.goalx = 3;
+        this.goaly = 3;
+        this.height = 3;
+        this.width = 3;
+      } else {
+        this.state = Frozenlake.TextToInt([
+          "SFFFFFFF",
+          "FFFFFFFF",
+          "FFFHFFFF",
+          "FFFFFHFF",
+          "FFFHFFFF",
+          "FHHFFFHF",
+          "FHFFHFHF",
+          "FFFHFFFG"
+        ]);
+        this.playerx = 0;
+        this.playery = 0;
+        this.goalx = 7;
+        this.goaly = 7;
+        this.height = 7;
+        this.width = 7;
+      }
     }
+    return [this.get_obs(), this.get_info()];
   }
-  module.exports = Fourinarow;
-});
+  render() {
+    let line = "";
+    for (let i = 0;i < this.state.length; i++) {
+      if (i % (this.height + 1) == 0) {
+        console.log(line);
+        line = "";
+      }
+      if (this.get_obs() == i) {
+        line += "P";
+      } else {
+        let representation = ["S", "F", "H", "G"];
+        lina += representation[this.state[i]];
+      }
+    }
+    console.log(line);
+    console.log("-------------");
+  }
+}
+var Frozenlake_default = Frozenlake;
+
+// Envs/2048.js
+var game = require_2048game();
+
+class TwoThousandfortyeight {
+  constructor() {
+    this.observation_shape = [16];
+    this.action_size = 4;
+    this.lastscore = 0;
+    this.match = new game.partida(false);
+    this.reset();
+  }
+  static sampleAction() {
+    return Math.floor(Math.random() * 4);
+  }
+  step(action) {
+    let actions = ["arriba", "abajo", "izquierda", "derecha"];
+    let mov = this.match.mover(actions[action]);
+    let obs = this.get_obs();
+    let reward = this.match.puntuacion - this.lastscore;
+    let max = Math.max(...obs);
+    if (obs.indexOf(max) == 0 || obs.indexOf(max) == 3 || obs.indexOf(max) == 12 || obs.indexOf(max) == 15) {
+      reward += 100;
+    }
+    let done = mov == `Has perdido porfavor reinicia la partida.` || mov == `Has ganado porfavor reinicia la partida.`;
+    let info = this.get_info();
+    this.lastscore = this.match.puntuacion;
+    return [obs, reward, done, info];
+  }
+  get_obs() {
+    return this.match.estado(true);
+  }
+  get_info() {
+    return [];
+  }
+  reset() {
+    this.match.reiniciar();
+    return [this.get_obs(), this.get_info()];
+  }
+  render() {
+    console.log(this.match.estado(false));
+  }
+}
+var _2048_default = TwoThousandfortyeight;
+
+// Envs/TicTacToe.js
+class TicTacToe {
+  static Status(board) {
+    for (let i = 0;i < 3; i++) {
+      if (board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
+        if (board[i][0] !== 0) {
+          return board[i][0];
+        }
+      }
+      if (board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
+        if (board[0][i] !== 0) {
+          return board[0][i];
+        }
+      }
+    }
+    if (board[0][0] === board[1][1] && board[1][1] === board[2][2] || board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+      if (board[1][1] !== 0) {
+        return board[1][1];
+      }
+    }
+    for (let i = 0;i < 3; i++) {
+      for (let j = 0;j < 3; j++) {
+        if (board[i][j] === 0) {
+          return "In progress";
+        }
+      }
+    }
+    return "Draw";
+  }
+  static OneHot(state) {
+    let X = state.map((x) => x == 1 ? 1 : 0);
+    let O = state.map((x) => x == 2 ? 1 : 0);
+    let E = state.map((x) => x == 0 ? 1 : 0);
+    return [X, O, E];
+  }
+  constructor(player) {
+    this.observation_shape = [3, 9];
+    this.action_size = 9;
+    this.state = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ];
+    this.turn = 0;
+    this.player = player ? 2 : 1;
+    this.reset();
+  }
+  static sampleAction() {
+    return Math.floor(Math.random() * 9);
+  }
+  step(action) {
+    let actiony = Math.floor(action / 3);
+    let actionx = action % 3;
+    let info;
+    if (this.state[actiony][actionx] == 0) {
+      this.state[actiony][actionx] = this.turn + 1;
+      info = this.get_info();
+      info[1] = 0;
+      this.turn = (this.turn + 1) % 2;
+    } else {
+      info = this.get_info();
+      info[1] = 1;
+    }
+    let obs = this.get_obs();
+    let reward;
+    if (info[0] == this.player) {
+      reward = 1;
+    } else if (info[0] == "Draw" || info[0] == "In progress") {
+      reward = 0;
+    } else {
+      reward = -1;
+    }
+    let done = info[0] == "Draw" || info[0] == 1 || info[0] == 2;
+    return [obs, reward, done, info];
+  }
+  get_obs() {
+    return TicTacToe.OneHot(this.state);
+  }
+  get_info() {
+    return [TicTacToe.Status(this.state)];
+  }
+  reset() {
+    this.turn = 0;
+    this.state = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ];
+    return [this.get_obs(), this.get_info()];
+  }
+  render() {
+    let text = "+-+-+-+\n";
+    for (let y = 0;y < this.state.length; y++) {
+      let line = "|";
+      for (let x = 0;x < this.state[y].length; x++) {
+        if (this.state[y][x] == 0) {
+          line += " ";
+        } else if (this.state[y][x] == 1) {
+          line += "X";
+        } else {
+          line += "O";
+        }
+        line += "|";
+      }
+      text += line + "\n+-+-+-+\n";
+    }
+    console.log(text);
+  }
+}
+var TicTacToe_default = TicTacToe;
+
+// Envs/Fourinarow.js
+var { Game: Game2 } = (init_src(), __toCommonJS(exports_src));
+
+class Fourinarow {
+  constructor() {
+    this.observation_shape = [6, 7];
+    this.action_size = 7;
+    this.match = new Game2;
+    this.reset();
+  }
+  static sampleAction() {
+    return Math.floor(Math.random() * 7);
+  }
+  step(action) {
+    const moveResult = this.match.playMove(action);
+    let obs = this.get_obs();
+    let reward = 0;
+    if (moveResult.status == "invalid") {
+      reward -= 1;
+    } else if (moveResult.status == "win") {
+      reward += 1;
+    }
+    let done = moveResult.status == "draw" || moveResult.status == "win";
+    let info = this.get_info();
+    return [obs, reward, done, info];
+  }
+  get_obs() {
+    return this.match.currentBoard.map((e) => Object.values(e));
+  }
+  get_info() {
+    return [this.match.status, this.match.currentTurn];
+  }
+  reset() {
+    this.match.reset();
+    return [this.get_obs(), this.get_info()];
+  }
+  render() {
+    let result = "";
+    let status = this.get_obs();
+    for (let y = 0;y < status.length; y++) {
+      let line = "";
+      for (let x = 0;x < status[y].length; x++) {
+        if (status[y][x] == 0) {
+          line += "\u26AA";
+        } else if (status[y][x] == 1) {
+          line += "\uD83D\uDFE1";
+        } else {
+          line += "\uD83D\uDD34";
+        }
+      }
+      result += line + "\n";
+    }
+    result += "-----------------";
+    console.log(result);
+  }
+}
+var Fourinarow_default = Fourinarow;
 
 // Envs/Snake.js
-var require_Snake = __commonJS((exports, module) => {
-  class Snake {
-    constructor(size = 10) {
-      this.size = size;
-      this.doublesize = this.size * this.size;
-      this.observation_shape = [8];
-      this.action_size = 4;
-      this.reset();
-    }
-    static sampleAction() {
-      return Math.floor(Math.random() * 4);
-    }
-    step(accion) {
-      let result = 0;
-      let newpos = [this.position[0], this.position[1]];
-      if (accion == 0) {
-        newpos[1]--;
-      } else if (accion == 1) {
-        newpos[1]++;
-      } else if (accion == 2) {
-        newpos[0]++;
-      } else {
-        newpos[0]--;
-      }
-      if (this.outside(newpos) || this.state[newpos[1]][newpos[0]] > 0)
-        result = -1;
-      if (result != -1 && this.state[newpos[1]][newpos[0]] == -1) {
-        this.state[newpos[1]][newpos[0]] = 0;
-        this.longitud++;
-        this.generateApple(newpos);
-        result = 1;
-      }
-      if (result != -1) {
-        this.state = this.state.map((f) => {
-          return f.map((e) => {
-            if (e == -1)
-              return -1;
-            if (e == 0)
-              return 0;
-            if (result == 1) {
-              return e;
-            }
-            return e - 1;
-          });
-        });
-        this.state[this.position[1]][this.position[0]] = this.longitud;
-        this.position = newpos;
-      }
-      return [this.get_obs(), result, result == -1, this.get_info()];
-    }
-    outside(position) {
-      if (position[0] < 0 || position[1] < 0 || position[0] > this.size - 1 || position[1] > this.size - 1)
-        return true;
-      return false;
-    }
-    get_obs() {
-      let peligros = this.free();
-      let peligroarriba = peligros[2] == 0 ? 1 : 1 - peligros[2] / this.doublesize;
-      let peligroabajo = peligros[3] == 0 ? 1 : 1 - peligros[3] / this.doublesize;
-      let peligroderecha = peligros[1] == 0 ? 1 : 1 - peligros[1] / this.doublesize;
-      let peligroizquierda = peligros[0] == 0 ? 1 : 1 - peligros[0] / this.doublesize;
-      let comidaarriba = this.positionApple[1] < this.position[1] ? 1 : 0;
-      let comidaabajo = this.positionApple[1] > this.position[1] ? 1 : 0;
-      let comidaderecha = this.positionApple[0] > this.position[0] ? 1 : 0;
-      let comidaizquierda = this.positionApple[0] < this.position[0] ? 1 : 0;
-      return [peligroabajo, peligroarriba, peligroderecha, peligroizquierda, comidaarriba, comidaabajo, comidaderecha, comidaizquierda];
-    }
-    get_info() {
-      return [];
-    }
-    generateApple(newpos) {
-      let x = Math.floor(Math.random() * this.size);
-      let y = Math.floor(Math.random() * this.size);
-      if (newpos == undefined)
-        newpos = this.position;
-      while (this.state[y][x] !== 0 || x == newpos[0] && y == newpos[1] || x == this.position[0] && y == this.position[1]) {
-        x = Math.floor(Math.random() * this.size);
-        y = Math.floor(Math.random() * this.size);
-      }
-      this.state[y][x] = -1;
-      this.positionApple = [x, y];
-    }
-    free() {
-      let free = [0, 0, 0, 0];
-      this.visitados = [this.position];
-      free[0] = this.freeCell([this.position[0] - 1, this.position[1]]);
-      this.visitados = [this.position];
-      free[1] = this.freeCell([this.position[0] + 1, this.position[1]]);
-      this.visitados = [this.position];
-      free[2] = this.freeCell([this.position[0], this.position[1] - 1]);
-      this.visitados = [this.position];
-      free[3] = this.freeCell([this.position[0], this.position[1] + 1]);
-      return free;
-    }
-    freeCell(position) {
-      let free = 0;
-      if (this.outside(position))
-        return free;
-      if (this.state[position[1]][position[0]] <= 0 && !this.visitados.some((p) => p[0] == position[0] && p[1] == position[1])) {
-        free += 1;
-        this.visitados.push(position);
-        free += this.freeCell([position[0] - 1, position[1]]);
-        free += this.freeCell([position[0] + 1, position[1]]);
-        free += this.freeCell([position[0], position[1] - 1]);
-        free += this.freeCell([position[0], position[1] + 1]);
-      }
-      return free;
-    }
-    reset() {
-      this.longitud = 1;
-      this.state = [];
-      for (let i = 0;i < this.size; i++) {
-        this.state.push(new Array(this.size).fill(0));
-      }
-      let startX = Math.floor(Math.random() * this.size);
-      let startY = Math.floor(Math.random() * this.size);
-      this.position = [startX, startY];
-      this.visitados = [];
-      this.positionApple = null;
-      this.generateApple();
-    }
-    render() {
-      let result = "\u259B" + "\u2594".repeat(this.size) + `\u259C
-`;
-      for (let y = 0;y < this.state.length; y++) {
-        let linea = "\u258D";
-        for (let x = 0;x < this.state[y].length; x++) {
-          if (x == this.position[0] && y == this.position[1]) {
-            linea += "\x1B[32mO\x1B[0m";
-          } else if (this.state[y][x] == 0) {
-            linea += " ";
-          } else if (this.state[y][x] == -1) {
-            linea += "\x1B[31m\u25A1\x1B[0m";
-          } else {
-            linea += "\x1B[32m+\x1B[0m";
-          }
-        }
-        linea += "\u2590";
-        result += linea + "\n";
-      }
-      result += "\u2599" + "\u2582".repeat(this.size) + `\u259F
-`;
-      console.log(result);
-    }
+class Snake {
+  constructor(size = 10) {
+    this.size = size;
+    this.doublesize = this.size * this.size;
+    this.observation_shape = [8];
+    this.action_size = 4;
+    this.reset();
   }
-  module.exports = Snake;
-});
-
-// index.js
-var require_gymrl = __commonJS((exports, module) => {
-  var Frozenlake = require_Frozenlake();
-  var TwoThousandfortyeight = require_2048();
-  var TicTacToe = require_TicTacToe();
-  var Fourinarow = require_Fourinarow();
-  var SnakeE = require_Snake();
-  module.exports = { Frozenlake, TwoThousandfortyeight, TicTacToe, Fourinarow, SnakeE };
-});
-export default require_gymrl();
+  static sampleAction() {
+    return Math.floor(Math.random() * 4);
+  }
+  step(accion) {
+    let result = 0;
+    let newpos = [this.position[0], this.position[1]];
+    if (accion == 0) {
+      newpos[1]--;
+    } else if (accion == 1) {
+      newpos[1]++;
+    } else if (accion == 2) {
+      newpos[0]++;
+    } else {
+      newpos[0]--;
+    }
+    if (this.outside(newpos) || this.state[newpos[1]][newpos[0]] > 0)
+      result = -1;
+    if (result != -1 && this.state[newpos[1]][newpos[0]] == -1) {
+      this.state[newpos[1]][newpos[0]] = 0;
+      this.longitud++;
+      this.generateApple(newpos);
+      result = 1;
+    }
+    if (result != -1) {
+      this.state = this.state.map((f) => {
+        return f.map((e) => {
+          if (e == -1)
+            return -1;
+          if (e == 0)
+            return 0;
+          if (result == 1) {
+            return e;
+          }
+          return e - 1;
+        });
+      });
+      this.state[this.position[1]][this.position[0]] = this.longitud;
+      this.position = newpos;
+    }
+    return [this.get_obs(), result, result == -1, this.get_info()];
+  }
+  outside(position) {
+    if (position[0] < 0 || position[1] < 0 || position[0] > this.size - 1 || position[1] > this.size - 1)
+      return true;
+    return false;
+  }
+  get_obs() {
+    let peligros = this.free();
+    let peligroarriba = peligros[2] == 0 ? 1 : 1 - peligros[2] / this.doublesize;
+    let peligroabajo = peligros[3] == 0 ? 1 : 1 - peligros[3] / this.doublesize;
+    let peligroderecha = peligros[1] == 0 ? 1 : 1 - peligros[1] / this.doublesize;
+    let peligroizquierda = peligros[0] == 0 ? 1 : 1 - peligros[0] / this.doublesize;
+    let comidaarriba = this.positionApple[1] < this.position[1] ? 1 : 0;
+    let comidaabajo = this.positionApple[1] > this.position[1] ? 1 : 0;
+    let comidaderecha = this.positionApple[0] > this.position[0] ? 1 : 0;
+    let comidaizquierda = this.positionApple[0] < this.position[0] ? 1 : 0;
+    return [peligroabajo, peligroarriba, peligroderecha, peligroizquierda, comidaarriba, comidaabajo, comidaderecha, comidaizquierda];
+  }
+  get_info() {
+    return [];
+  }
+  generateApple(newpos) {
+    let x = Math.floor(Math.random() * this.size);
+    let y = Math.floor(Math.random() * this.size);
+    if (newpos == undefined)
+      newpos = this.position;
+    while (this.state[y][x] !== 0 || x == newpos[0] && y == newpos[1] || x == this.position[0] && y == this.position[1]) {
+      x = Math.floor(Math.random() * this.size);
+      y = Math.floor(Math.random() * this.size);
+    }
+    this.state[y][x] = -1;
+    this.positionApple = [x, y];
+  }
+  free() {
+    let free = [0, 0, 0, 0];
+    this.visitados = [this.position];
+    free[0] = this.freeCell([this.position[0] - 1, this.position[1]]);
+    this.visitados = [this.position];
+    free[1] = this.freeCell([this.position[0] + 1, this.position[1]]);
+    this.visitados = [this.position];
+    free[2] = this.freeCell([this.position[0], this.position[1] - 1]);
+    this.visitados = [this.position];
+    free[3] = this.freeCell([this.position[0], this.position[1] + 1]);
+    return free;
+  }
+  freeCell(position) {
+    let free = 0;
+    if (this.outside(position))
+      return free;
+    if (this.state[position[1]][position[0]] <= 0 && !this.visitados.some((p) => p[0] == position[0] && p[1] == position[1])) {
+      free += 1;
+      this.visitados.push(position);
+      free += this.freeCell([position[0] - 1, position[1]]);
+      free += this.freeCell([position[0] + 1, position[1]]);
+      free += this.freeCell([position[0], position[1] - 1]);
+      free += this.freeCell([position[0], position[1] + 1]);
+    }
+    return free;
+  }
+  reset() {
+    this.longitud = 1;
+    this.state = [];
+    for (let i = 0;i < this.size; i++) {
+      this.state.push(new Array(this.size).fill(0));
+    }
+    let startX = Math.floor(Math.random() * this.size);
+    let startY = Math.floor(Math.random() * this.size);
+    this.position = [startX, startY];
+    this.visitados = [];
+    this.positionApple = null;
+    this.generateApple();
+  }
+  render() {
+    let result = "\u259B" + "\u2594".repeat(this.size) + `\u259C
+`;
+    for (let y = 0;y < this.state.length; y++) {
+      let linea = "\u258D";
+      for (let x = 0;x < this.state[y].length; x++) {
+        if (x == this.position[0] && y == this.position[1]) {
+          linea += "\x1B[32mO\x1B[0m";
+        } else if (this.state[y][x] == 0) {
+          linea += " ";
+        } else if (this.state[y][x] == -1) {
+          linea += "\x1B[31m\u25A1\x1B[0m";
+        } else {
+          linea += "\x1B[32m+\x1B[0m";
+        }
+      }
+      linea += "\u2590";
+      result += linea + "\n";
+    }
+    result += "\u2599" + "\u2582".repeat(this.size) + `\u259F
+`;
+    console.log(result);
+  }
+}
+var Snake_default = Snake;
+export {
+  _2048_default as TwoThousandfortyeight,
+  TicTacToe_default as TicTacToe,
+  Snake_default as Snake,
+  Frozenlake_default as Frozenlake,
+  Fourinarow_default as Fourinarow
+};

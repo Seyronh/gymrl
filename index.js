@@ -1,6 +1,6 @@
-const Frozenlake = require('./Envs/Frozenlake.js');
-const TwoThousandfortyeight = require('./Envs/2048.js');
-const TicTacToe = require('./Envs/TicTacToe.js');
-const Fourinarow = require('./Envs/Fourinarow.js');
-const Snake = require('./Envs/Snake.js')
-module.exports = {Frozenlake,TwoThousandfortyeight,TicTacToe,Fourinarow,Snake};
+import Frozenlake from './Envs/Frozenlake.js';
+import TwoThousandfortyeight from './Envs/2048.js';
+import TicTacToe from './Envs/TicTacToe.js';
+import Fourinarow from './Envs/Fourinarow.js';
+import Snake from './Envs/Snake.js'
+export {Frozenlake,TwoThousandfortyeight,TicTacToe,Fourinarow,Snake};

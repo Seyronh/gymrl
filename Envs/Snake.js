@@ -141,4 +141,4 @@ class Snake {
         console.log(result)
     }
 }
-module.exports = Snake;
+export default Snake;

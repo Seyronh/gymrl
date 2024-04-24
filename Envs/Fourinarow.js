@@ -52,4 +52,4 @@ class Fourinarow {
         console.log(result)
     }
 }
-module.exports = Fourinarow;
+export default Fourinarow;
