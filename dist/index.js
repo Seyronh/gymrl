@@ -905,12 +905,6 @@ class TicTacToe {
   constructor(player) {
     this.observation_shape = [3, 9];
     this.action_size = 9;
-    this.state = [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0]
-    ];
-    this.turn = 0;
     this.player = player ? 2 : 1;
     this.reset();
   }
