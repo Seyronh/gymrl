@@ -1,6 +1,6 @@
 {
   "name": "gymrl",
-  "version": "1.2.12",
+  "version": "1.2.13",
   "description": "OpenAI style Gym for javascript",
   "main": "./dist/index.js",
   "homepage": "https://github.com/Seyronh/gymrl#readme",
