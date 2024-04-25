@@ -684,7 +684,7 @@ var init_src = __esm(() => {
   init_constants();
 });
 
-// Envs/Frozenlake.js
+// src/Envs/Frozenlake.js
 class Frozenlake {
   static TextToInt(state) {
     let middle = state.map((e) => e.split(""));
@@ -823,7 +823,7 @@ class Frozenlake {
 }
 var Frozenlake_default = Frozenlake;
 
-// Envs/2048.js
+// src/Envs/2048.js
 var game = require_2048game();
 
 class TwoThousandfortyeight {
@@ -867,7 +867,7 @@ class TwoThousandfortyeight {
 }
 var _2048_default = TwoThousandfortyeight;
 
-// Envs/TicTacToe.js
+// src/Envs/TicTacToe.js
 class TicTacToe {
   static Status(board) {
     for (let i = 0;i < 3; i++) {
@@ -972,7 +972,7 @@ class TicTacToe {
 }
 var TicTacToe_default = TicTacToe;
 
-// Envs/Fourinarow.js
+// src/Envs/Fourinarow.js
 var { Game: Game2 } = (init_src(), __toCommonJS(exports_src));
 
 class Fourinarow {
@@ -1030,7 +1030,7 @@ class Fourinarow {
 }
 var Fourinarow_default = Fourinarow;
 
-// Envs/Snake.js
+// src/Envs/Snake.js
 class Snake {
   constructor(size = 10) {
     this.size = size;
@@ -1086,16 +1086,16 @@ class Snake {
     return false;
   }
   get_obs() {
-    let peligros = this.free();
-    let peligroarriba = peligros[2] == 0 ? 1 : 1 - peligros[2] / this.doublesize;
-    let peligroabajo = peligros[3] == 0 ? 1 : 1 - peligros[3] / this.doublesize;
-    let peligroderecha = peligros[1] == 0 ? 1 : 1 - peligros[1] / this.doublesize;
-    let peligroizquierda = peligros[0] == 0 ? 1 : 1 - peligros[0] / this.doublesize;
-    let comidaarriba = this.positionApple[1] < this.position[1] ? 1 : 0;
-    let comidaabajo = this.positionApple[1] > this.position[1] ? 1 : 0;
-    let comidaderecha = this.positionApple[0] > this.position[0] ? 1 : 0;
-    let comidaizquierda = this.positionApple[0] < this.position[0] ? 1 : 0;
-    return [peligroabajo, peligroarriba, peligroderecha, peligroizquierda, comidaarriba, comidaabajo, comidaderecha, comidaizquierda];
+    let dangers = this.free();
+    let dangerabove = dangers[2] == 0 ? 1 : 1 - dangers[2] / this.doublesize;
+    let dangerbelow = dangers[3] == 0 ? 1 : 1 - dangers[3] / this.doublesize;
+    let dangerright = dangers[1] == 0 ? 1 : 1 - dangers[1] / this.doublesize;
+    let dangerleft = dangers[0] == 0 ? 1 : 1 - dangers[0] / this.doublesize;
+    let foodnorth = this.positionApple[1] < this.position[1] ? 1 : 0;
+    let foodsouth = this.positionApple[1] > this.position[1] ? 1 : 0;
+    let foodeast = this.positionApple[0] > this.position[0] ? 1 : 0;
+    let foodwest = this.positionApple[0] < this.position[0] ? 1 : 0;
+    return [dangerbelow, dangerabove, dangerright, dangerleft, foodnorth, foodsouth, foodeast, foodwest];
   }
   get_info() {
     return [];
@@ -1150,6 +1150,7 @@ class Snake {
     this.visitados = [];
     this.positionApple = null;
     this.generateApple();
+    return [this.get_obs(), this.get_info()];
   }
   render() {
     let result = "\u259B" + "\u2594".repeat(this.size) + `\u259C
