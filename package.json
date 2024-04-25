@@ -9,7 +9,7 @@
   },
   "repository": "https://github.com/Seyronh/gymrl",
   "scripts": {
-    "build": "bun build ./index.js --outdir ./dist",
+    "build": "bun build ./src/index.js --outdir ./dist",
     "test": "bun test"
   },
   "files": [
