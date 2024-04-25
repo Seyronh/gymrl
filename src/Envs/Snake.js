@@ -1,4 +1,9 @@
 class Snake {
+    /**
+     * Initializes a new instance of the Snake class.
+     *
+     * @param {number} [size=10] - The size of the map. Defaults to 10.
+     */
     constructor(size = 10){
         this.size = size;
         this.doublesize = this.size * this.size;
@@ -6,9 +11,20 @@ class Snake {
         this.action_size = 4;
         this.reset()
     }
+    /**
+     * Generates a random action between 0 and 3 for the Snake game.
+     *
+     * @return {number} The randomly selected action.
+     */
     static sampleAction(){
         return Math.floor(Math.random()*4);
     }
+    /**
+     * Executes a step in the Snake game based on the given action.
+     *
+     * @param {number} accion - The action to be taken in the game.
+     * @return {Array} An array containing the observation, reward, done flag, and info.
+     */
     step(accion){
         let result = 0;
         let newpos = [this.position[0],this.position[1]];
@@ -51,23 +67,48 @@ class Snake {
         return false
     }
     
+/**
+ * Calculates the observations for the current state of the game.
+ *
+ * @return {Array} An array containing the observations for the game state.
+ *                 The array has the following elements:
+ *                 - dangerBelow: A number between 0 and 1 indicating the danger from below.
+ *                 - dangerAbove: A number between 0 and 1 indicating the danger from above.
+ *                 - dangerRight: A number between 0 and 1 indicating the danger from the right.
+ *                 - dangerLeft: A number between 0 and 1 indicating the danger from the left.
+ *                 - foodNorth: A number indicating the presence of food in the north (1) or not (0).
+ *                 - foodSouth: A number indicating the presence of food in the south (1) or not (0).
+ *                 - foodeast: A number indicating the presence of food in the east (1) or not (0).
+ *                 - foodwest: A number indicating the presence of food in the west (1) or not (0).
+ */
     get_obs(){
-        let peligros = this.free();
-        let peligroarriba = peligros[2] == 0 ? 1 : 1-(peligros[2]/this.doublesize);
-        let peligroabajo = peligros[3] == 0 ? 1 : 1-(peligros[3]/this.doublesize);
-        let peligroderecha = peligros[1] == 0 ? 1 : 1-(peligros[1]/this.doublesize);
-        let peligroizquierda =  peligros[0] == 0 ? 1 : 1-(peligros[0]/this.doublesize);
+        let dangers = this.free();
+        let dangerabove = dangers[2] == 0 ? 1 : 1-(dangers[2]/this.doublesize);
+        let dangerbelow = dangers[3] == 0 ? 1 : 1-(dangers[3]/this.doublesize);
+        let dangerright = dangers[1] == 0 ? 1 : 1-(dangers[1]/this.doublesize);
+        let dangerleft =  dangers[0] == 0 ? 1 : 1-(dangers[0]/this.doublesize);
 
-        let comidaarriba = this.positionApple[1] < this.position[1] ? 1 : 0;
-        let comidaabajo = this.positionApple[1] > this.position[1] ? 1 : 0;
-        let comidaderecha = this.positionApple[0] > this.position[0] ? 1 : 0;
-        let comidaizquierda = this.positionApple[0] < this.position[0] ? 1 : 0;
-        return [peligroabajo,peligroarriba,peligroderecha,peligroizquierda,comidaarriba,comidaabajo,comidaderecha,comidaizquierda];
+        let foodnorth = this.positionApple[1] < this.position[1] ? 1 : 0;
+        let foodsouth = this.positionApple[1] > this.position[1] ? 1 : 0;
+        let foodeast = this.positionApple[0] > this.position[0] ? 1 : 0;
+        let foodwest = this.positionApple[0] < this.position[0] ? 1 : 0;
+        return [dangerbelow,dangerabove,dangerright,dangerleft,foodnorth,foodsouth,foodeast,foodwest];
 
     }
+    /**
+     * Returns an empty array.
+     *
+     * @return {Array} An empty array.
+     */
     get_info(){
         return [];
     }
+    /**
+     * Generates a random position for the apple in the game board.
+     *
+     * @param {Array} [newpos] - Optional. The initial position of the apple.
+     * @return {void} This function does not return a value.
+     */
     generateApple(newpos){
         let x = Math.floor(Math.random()*this.size);
         let y = Math.floor(Math.random()*this.size);
@@ -79,6 +120,12 @@ class Snake {
         this.state[y][x] = -1
         this.positionApple = [x,y];
     }
+    /**
+     * A function that calculates the available free cells around the current position.
+     *
+     * @param {Array} position - The current position to check for free cells.
+     * @return {Array} An array containing the count of free cells in each direction.
+     */
     free(){
         let free = [0,0,0,0];
         this.visitados = [this.position];
@@ -91,6 +138,12 @@ class Snake {
         free[3] = this.freeCell([this.position[0],this.position[1]+1]);//abajo
         return free;
     }
+    /**
+     * Calculates the number of free cells around a given position.
+     *
+     * @param {Array} position - The position to check for free cells.
+     * @return {number} The number of free cells around the given position.
+     */
     freeCell(position){
         let free = 0;
         if(this.outside(position)) return free;
@@ -104,6 +157,11 @@ class Snake {
         }
         return free;
     }
+    /**
+     * Resets the state of the Snake game.
+     *
+     * @return {Array} An array containing the observation and information after the reset.
+     */
     reset(){
         this.longitud = 1;
         this.state = []
@@ -116,7 +174,19 @@ class Snake {
         this.visitados = [];
         this.positionApple = null;
         this.generateApple();
+        return [this.get_obs(),this.get_info()]
     }
+    /**
+     * Renders the game board for the Snake game.
+     *
+     * This function generates a string representation of the game board
+     * for the Snake game. It iterates over the state array, which represents
+     * the game board, and builds a string with the appropriate characters
+     * to represent the snake, empty spaces, obstacles, and the apple.
+     * The resulting string is printed to the console.
+     *
+     * @return {void} This function does not return a value.
+     */
     render(){
         let result = "▛"+"▔".repeat(this.size)+"▜\n";
         for(let y = 0;y<this.state.length;y++){
