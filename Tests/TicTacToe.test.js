@@ -24,60 +24,87 @@ test("SampleAction",() => {
 test("StepBlank",() => {
     for(let i = 0;i<9;i++){
         game = new TicTacToe(false);
-        game.step(i);
+        let stepinfo = game.step(i);
+        expect(stepinfo[2]).toBe(false);
         expect(game).toHaveProperty('state',[[ i==0 ? 1 : 0, i==1 ? 1 : 0, i==2 ? 1 : 0 ], [ i==3 ? 1 : 0, i==4 ? 1 : 0, i==5 ? 1 : 0 ], [ i==6 ? 1 : 0,i==7 ? 1 : 0,i==8 ? 1 : 0]])
     }
 })
 test("StepTaken",() => {
     for(let i = 0;i<9;i++){
         game = new TicTacToe(false);
-        game.step(i);
+        let stepinfo = game.step(i);
+        expect(stepinfo[2]).toBe(false);
         game.step(i);
         expect(game).toHaveProperty('state',[[ i==0 ? 1 : 0, i==1 ? 1 : 0, i==2 ? 1 : 0 ], [ i==3 ? 1 : 0, i==4 ? 1 : 0, i==5 ? 1 : 0 ], [ i==6 ? 1 : 0,i==7 ? 1 : 0,i==8 ? 1 : 0]])
     }
 })
 test("Reset",() => {
     let i = TicTacToe.sampleAction()
-    game.step(i);
+    let stepinfo = game.step(i);
+    expect(stepinfo[2]).toBe(false);
     game.reset();
     expect(game).toHaveProperty('state',[[0, 0, 0], [0, 0, 0], [0, 0, 0]])
 })
 test("CheckWinRow",() => {
-    game.step(0);
-    game.step(3);
-    game.step(1);
-    game.step(4);
-    game.step(2);
+    let stepinfo = game.step(0);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(3);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(1);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(4);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(2);
     expect(game.get_info()).toEqual([1]);
+    expect(stepinfo[2]).toBe(true);
 })
 
 test("CheckWinColumn",() => {
-    game.step(0);
-    game.step(1);
-    game.step(3);
-    game.step(2);
-    game.step(6);
+    let stepinfo = game.step(0);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(1);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(3);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(2);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(6);
     expect(game.get_info()).toEqual([1]);
+    expect(stepinfo[2]).toBe(true);
 })
 
 test("CheckWinDiagonal",() => {
-    game.step(0);
-    game.step(1);
-    game.step(4);
-    game.step(2);
-    game.step(8);
+    let stepinfo = game.step(0);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo =game.step(1);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(4);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(2);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(8);
     expect(game.get_info()).toEqual([1]);
+    expect(stepinfo[2]).toBe(true);
 })
 
 test("CheckDraw",() => {
-    game.step(0);
-    game.step(1);
-    game.step(2);
-    game.step(3);
-    game.step(5);
-    game.step(6);
-    game.step(7);
-    game.step(8);
-    game.step(4);
+    let stepinfo = game.step(0);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(1);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(2);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(3);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(5);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(6);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(7);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo = game.step(8);
+    expect(stepinfo[2]).toBe(false);
+    stepinfo =game.step(4);
+    expect(stepinfo[2]).toBe(true);
     expect(game.get_info()).toEqual(['Draw']);
 })
