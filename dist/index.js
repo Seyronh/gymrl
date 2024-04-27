@@ -1359,9 +1359,10 @@ class Rubik {
     this.stepsTaken++;
     this.execute(action);
     let reward = 0;
-    let done = this.state.map((rowArr, index) => {
-      return rowArr.every((val) => val != rowArr[index]);
-    });
+    let correctfaces = this.state.map((rowArr, index) => {
+      return rowArr.every((val) => val == rowArr[index]);
+    }).filter((e) => e == true).length;
+    let done = correctfaces == 6;
     if (!done && this.stepsTaken == this.moves) {
       done = true;
       reward = -1;
