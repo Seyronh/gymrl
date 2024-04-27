@@ -842,10 +842,6 @@ class TwoThousandfortyeight {
     let mov = this.match.mover(actions[action]);
     let obs = this.get_obs();
     let reward = this.match.puntuacion - this.lastscore;
-    let max = Math.max(...obs);
-    if (obs.indexOf(max) == 0 || obs.indexOf(max) == 3 || obs.indexOf(max) == 12 || obs.indexOf(max) == 15) {
-      reward += 100;
-    }
     let done = mov == `Has perdido porfavor reinicia la partida.` || mov == `Has ganado porfavor reinicia la partida.`;
     let info = this.get_info();
     this.lastscore = this.match.puntuacion;
