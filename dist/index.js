@@ -1173,10 +1173,312 @@ class Snake {
   }
 }
 var Snake_default = Snake;
+
+// src/Envs/Rubik.js
+var rotateMatrixClockwise = function(matrix) {
+  let copy = [...matrix];
+  copy[0] = matrix[6];
+  copy[1] = matrix[3];
+  copy[2] = matrix[0];
+  copy[3] = matrix[7];
+  copy[5] = matrix[1];
+  copy[6] = matrix[8];
+  copy[7] = matrix[5];
+  copy[8] = matrix[2];
+  return copy;
+};
+var rotateMatrixCounterClockwise = function(matrix) {
+  let copy = [...matrix];
+  copy[0] = matrix[2];
+  copy[1] = matrix[5];
+  copy[2] = matrix[8];
+  copy[3] = matrix[1];
+  copy[5] = matrix[7];
+  copy[6] = matrix[0];
+  copy[7] = matrix[3];
+  copy[8] = matrix[6];
+  return copy;
+};
+
+class Rubik {
+  constructor(moves) {
+    this.moves = moves;
+    this.observation_shape = [6, 9];
+    this.action_size = 12;
+    this.reset();
+  }
+  static sampleAction() {
+    return Math.floor(Math.random() * 12);
+  }
+  execute(action) {
+    let copy = this.state.map((arr) => arr.slice());
+    if (action == 0) {
+      copy[0] = rotateMatrixClockwise(copy[0]);
+      for (let face = 1;face < 5; face++) {
+        for (let pos = 0;pos < 3; pos++) {
+          copy[face][pos] = this.state[face + 1 == 5 ? 1 : face + 1][pos];
+        }
+      }
+    } else if (action == 1) {
+      copy[0] = rotateMatrixCounterClockwise(copy[0]);
+      for (let face = 1;face < 5; face++) {
+        for (let pos = 0;pos < 3; pos++) {
+          copy[face][pos] = this.state[face == 1 ? 4 : face - 1][pos];
+        }
+      }
+    } else if (action == 2) {
+      copy[5] = rotateMatrixCounterClockwise(copy[5]);
+      for (let face = 1;face < 5; face++) {
+        for (let pos = 6;pos < 9; pos++) {
+          copy[face][pos] = this.state[face == 1 ? 4 : face - 1][pos];
+        }
+      }
+    } else if (action == 3) {
+      copy[5] = rotateMatrixClockwise(copy[5]);
+      for (let face = 1;face < 5; face++) {
+        for (let pos = 6;pos < 9; pos++) {
+          copy[face][pos] = this.state[face + 1 == 5 ? 1 : face + 1][pos];
+        }
+      }
+    } else if (action == 4) {
+      copy[3] = rotateMatrixClockwise(copy[3]);
+      copy[0][2] = this.state[2][2];
+      copy[0][5] = this.state[2][5];
+      copy[0][8] = this.state[2][8];
+      copy[2][2] = this.state[5][2];
+      copy[2][5] = this.state[5][5];
+      copy[2][8] = this.state[5][8];
+      copy[4][0] = this.state[0][2];
+      copy[4][3] = this.state[0][5];
+      copy[4][6] = this.state[0][8];
+      copy[5][2] = this.state[4][0];
+      copy[5][5] = this.state[4][3];
+      copy[5][8] = this.state[4][6];
+    } else if (action == 5) {
+      copy[3] = rotateMatrixCounterClockwise(copy[3]);
+      copy[0][2] = this.state[4][0];
+      copy[0][5] = this.state[4][3];
+      copy[0][8] = this.state[4][6];
+      copy[2][2] = this.state[0][2];
+      copy[2][5] = this.state[0][5];
+      copy[2][8] = this.state[0][8];
+      copy[4][0] = this.state[5][2];
+      copy[4][3] = this.state[5][5];
+      copy[4][6] = this.state[5][8];
+      copy[5][2] = this.state[2][0];
+      copy[5][5] = this.state[2][3];
+      copy[5][8] = this.state[2][6];
+    } else if (action == 6) {
+      copy[1] = rotateMatrixClockwise(copy[1]);
+      copy[0][0] = this.state[4][2];
+      copy[0][3] = this.state[4][5];
+      copy[0][6] = this.state[4][8];
+      copy[2][0] = this.state[0][0];
+      copy[2][3] = this.state[0][3];
+      copy[2][6] = this.state[0][6];
+      copy[4][2] = this.state[5][0];
+      copy[4][5] = this.state[5][3];
+      copy[4][8] = this.state[5][6];
+      copy[5][0] = this.state[2][0];
+      copy[5][3] = this.state[2][3];
+      copy[5][6] = this.state[2][6];
+    } else if (action == 7) {
+      copy[1] = rotateMatrixCounterClockwise(copy[1]);
+      copy[0][0] = this.state[2][2];
+      copy[0][3] = this.state[2][5];
+      copy[0][6] = this.state[2][8];
+      copy[2][0] = this.state[5][2];
+      copy[2][3] = this.state[5][5];
+      copy[2][6] = this.state[5][8];
+      copy[4][2] = this.state[0][2];
+      copy[4][5] = this.state[0][5];
+      copy[4][8] = this.state[0][8];
+      copy[5][0] = this.state[4][0];
+      copy[5][3] = this.state[4][3];
+      copy[5][6] = this.state[4][6];
+    } else if (action == 8) {
+      copy[2] = rotateMatrixClockwise(copy[2]);
+      copy[0][6] = this.state[1][2];
+      copy[0][7] = this.state[1][5];
+      copy[0][8] = this.state[1][8];
+      copy[3][0] = this.state[0][6];
+      copy[3][3] = this.state[0][7];
+      copy[3][6] = this.state[0][8];
+      copy[5][0] = this.state[3][0];
+      copy[5][1] = this.state[3][3];
+      copy[5][2] = this.state[3][6];
+      copy[1][2] = this.state[5][0];
+      copy[1][5] = this.state[5][1];
+      copy[1][8] = this.state[5][2];
+    } else if (action == 9) {
+      copy[2] = rotateMatrixCounterClockwise(copy[2]);
+      copy[0][6] = this.state[3][0];
+      copy[0][7] = this.state[3][3];
+      copy[0][8] = this.state[3][6];
+      copy[3][0] = this.state[5][0];
+      copy[3][3] = this.state[5][1];
+      copy[3][6] = this.state[5][2];
+      copy[5][0] = this.state[1][2];
+      copy[5][1] = this.state[1][5];
+      copy[5][2] = this.state[1][8];
+      copy[1][2] = this.state[0][6];
+      copy[1][5] = this.state[0][7];
+      copy[1][8] = this.state[0][8];
+    } else if (action == 10) {
+      copy[4] = rotateMatrixClockwise(copy[4]);
+      copy[0][0] = this.state[3][2];
+      copy[0][1] = this.state[3][5];
+      copy[0][2] = this.state[3][8];
+      copy[3][2] = this.state[5][6];
+      copy[3][5] = this.state[5][7];
+      copy[3][8] = this.state[5][8];
+      copy[5][6] = this.state[1][0];
+      copy[5][7] = this.state[1][3];
+      copy[5][8] = this.state[1][6];
+      copy[1][0] = this.state[0][0];
+      copy[1][3] = this.state[0][1];
+      copy[1][6] = this.state[0][2];
+    } else if (action == 11) {
+      copy[4] = rotateMatrixCounterClockwise(copy[4]);
+      copy[0][0] = this.state[1][0];
+      copy[0][1] = this.state[1][3];
+      copy[0][2] = this.state[1][6];
+      copy[3][2] = this.state[0][0];
+      copy[3][5] = this.state[0][1];
+      copy[3][8] = this.state[0][2];
+      copy[5][6] = this.state[3][2];
+      copy[5][7] = this.state[3][5];
+      copy[5][8] = this.state[3][8];
+      copy[1][0] = this.state[5][6];
+      copy[1][3] = this.state[5][7];
+      copy[1][6] = this.state[5][8];
+    }
+    this.state = copy.map((arr) => arr.slice());
+  }
+  step(action) {
+    this.stepsTaken++;
+    this.execute(action);
+    let reward = 0;
+    let done = this.state.map((rowArr, index) => {
+      return rowArr.every((val) => val != rowArr[index]);
+    });
+    if (!done && this.stepsTaken == this.moves) {
+      done = true;
+      reward = -1;
+    } else if (done) {
+      reward = 1;
+    }
+    let info = this.get_info();
+    return [this.get_obs(), reward, done, info];
+  }
+  get_obs() {
+    return this.state;
+  }
+  get_info() {
+    return [this.moves - this.stepsTaken];
+  }
+  reset() {
+    this.stepsTaken = 0;
+    this.state = [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ]
+    ];
+    for (let i = 0;i < this.moves; i++) {
+      this.step(Rubik.sampleAction());
+      this.stepsTaken--;
+    }
+    return [this.get_obs(), this.get_info()];
+  }
+  render() {
+    let repState = this.state.map((Y) => {
+      return Y.map((x) => {
+        if (x == 0) {
+          return "\u2B1C";
+        } else if (x == 1) {
+          return "\uD83D\uDFE7";
+        } else if (x == 2) {
+          return "\uD83D\uDFE9";
+        } else if (x == 3) {
+          return "\uD83D\uDFE5";
+        } else if (x == 4) {
+          return "\uD83D\uDFE6";
+        } else
+          return "\uD83D\uDFE8";
+      });
+    });
+    console.log(`              +------------+\n`, `             | ${repState[0][0]}  ${repState[0][1]}  ${repState[0][2]} |\n`, `             | ${repState[0][3]}  ${repState[0][4]}  ${repState[0][5]} |\n`, `             | ${repState[0][6]}  ${repState[0][7]}  ${repState[0][8]} |\n`, `+------------+------------+------------+------------+\n`, `| ${repState[1][0]}  ${repState[1][1]}  ${repState[1][2]} | ${repState[2][0]}  ${repState[2][1]}  ${repState[2][2]} | ${repState[3][0]}  ${repState[3][1]}  ${repState[3][2]} | ${repState[4][0]}  ${repState[4][1]}  ${repState[4][2]} |\n`, `| ${repState[1][3]}  ${repState[1][4]}  ${repState[1][5]} | ${repState[2][3]}  ${repState[2][4]}  ${repState[2][5]} | ${repState[3][3]}  ${repState[3][4]}  ${repState[3][5]} | ${repState[4][3]}  ${repState[4][4]}  ${repState[4][5]} |\n`, `| ${repState[1][6]}  ${repState[1][7]}  ${repState[1][8]} | ${repState[2][6]}  ${repState[2][7]}  ${repState[2][8]} | ${repState[3][6]}  ${repState[3][7]}  ${repState[3][8]} | ${repState[4][6]}  ${repState[4][7]}  ${repState[4][8]} |\n`, `+------------+------------+------------+------------+\n`, `             | ${repState[5][0]}  ${repState[5][1]}  ${repState[5][2]} |\n`, `             | ${repState[5][3]}  ${repState[5][4]}  ${repState[5][5]} |\n`, `             | ${repState[5][6]}  ${repState[5][7]}  ${repState[5][8]} |\n`, `             +------------+`);
+  }
+}
+var Rubik_default = Rubik;
 export {
   _2048_default as TwoThousandfortyeight,
   TicTacToe_default as TicTacToe,
   Snake_default as Snake,
+  Rubik_default as Rubik,
   Frozenlake_default as Frozenlake,
   Fourinarow_default as Fourinarow
 };
