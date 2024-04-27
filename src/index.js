@@ -3,4 +3,5 @@ import TwoThousandfortyeight from './Envs/2048.js';
 import TicTacToe from './Envs/TicTacToe.js';
 import Fourinarow from './Envs/Fourinarow.js';
 import Snake from './Envs/Snake.js'
-export {Frozenlake,TwoThousandfortyeight,TicTacToe,Fourinarow,Snake};
+import Rubik from './Envs/Rubik.js'
+export {Frozenlake,TwoThousandfortyeight,TicTacToe,Fourinarow,Snake,Rubik};
