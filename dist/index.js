@@ -1475,11 +1475,165 @@ class Rubik {
   }
 }
 var Rubik_default = Rubik;
+
+// src/Envs/Pong.js
+class Pong {
+  constructor(player, difficulty = 0.2) {
+    this.observation_shape = [6];
+    this.action_size = 3;
+    this.player = player ? 1 : 0;
+    this.difficulty = difficulty;
+    this.reset();
+  }
+  static sampleAction() {
+    return Math.floor(Math.random() * 3);
+  }
+  step(action) {
+    if (action == 0) {
+      if (this.player == 0) {
+        this.player1[1]--;
+        if (this.player1[1] < 1)
+          this.player1[1] = 1;
+      } else {
+        this.player2[1]--;
+        if (this.player2[1] < 1)
+          this.player2[1] = 1;
+      }
+    } else if (action == 2) {
+      if (this.player == 0) {
+        this.player1[1]++;
+        if (this.player1[1] > 9)
+          this.player1[1] = 9;
+      } else {
+        this.player2[1]++;
+        if (this.player2[1] > 9)
+          this.player2[1] = 9;
+      }
+    }
+    if (this.player == 1) {
+      let right = Math.random() > 1 - this.difficulty;
+      if (right) {
+        if (this.ball[1] > this.player1[1]) {
+          this.player1[1]++;
+          if (this.player1[1] > 9)
+            this.player1[1] = 9;
+        } else if (this.ball[1] < this.player1[1]) {
+          this.player1[1]--;
+          if (this.player1[1] < 1)
+            this.player1[1] = 1;
+        }
+      } else {
+        let rng = Math.floor(Math.random() * 3);
+        if (rng == 0) {
+          this.player1[1]--;
+          if (this.player1[1] < 1)
+            this.player1[1] = 1;
+        } else if (rng == 2) {
+          this.player1[1]++;
+          if (this.player1[1] > 9)
+            this.player1[1] = 9;
+        }
+      }
+    } else {
+      let right = Math.random() > 1 - this.difficulty;
+      if (right) {
+        if (this.ball[1] > this.player2[1]) {
+          this.player2[1]++;
+          if (this.player2[1] > 9)
+            this.player2[1] = 9;
+        } else if (this.ball[1] < this.player2[1]) {
+          this.player2[1]--;
+          if (this.player2[1] < 1)
+            this.player2[1] = 1;
+        }
+      } else {
+        let rng = Math.floor(Math.random() * 3);
+        if (rng == 0) {
+          this.player2[1]--;
+          if (this.player2[1] < 1)
+            this.player2[1] = 1;
+        } else if (rng == 2) {
+          this.player1[1]++;
+          if (this.player2[1] > 9)
+            this.player2[1] = 9;
+        }
+      }
+    }
+    this.processball();
+    let reward = 0;
+    let done = false;
+    if (this.ball[0] == 0) {
+      if (this.player == 0)
+        reward -= 1;
+      else
+        reward += 1;
+      done = true;
+    }
+    if (this.ball[0] == 10) {
+      if (this.player == 0)
+        reward += 1;
+      else
+        reward -= 1;
+      done = true;
+    }
+    return [this.get_obs(), reward, done, this.get_info()];
+  }
+  processball() {
+    if (this.ball[1] == 0 || this.ball[1] == 10) {
+      this.balldir[1] *= -1;
+    }
+    if (this.ball[0] - 1 == this.player1[0] && (this.ball[1] == this.player1[1] || this.ball[1] == this.player1[1] - 1 || this.ball[1] == this.player1[1] + 1) || this.ball[0] + 1 == this.player2[0] && (this.ball[1] == this.player2[1] || this.ball[1] == this.player2[1] - 1 || this.ball[1] == this.player2[1] + 1)) {
+      this.balldir[0] *= -1;
+    }
+    this.ball = [this.ball[0] + this.balldir[0], this.ball[1] + this.balldir[1]];
+  }
+  get_obs() {
+    return [this.player1[1], this.player2[1], this.ball[0], this.ball[1], this.balldir[0], this.balldir[1]];
+  }
+  get_info() {
+    return [];
+  }
+  reset() {
+    this.player1 = [0, 5];
+    this.player2 = [10, 5];
+    this.ball = [5, 5];
+    let dir = Math.floor(Math.random() * 4);
+    if (dir == 0) {
+      this.balldir = [-1, -1];
+    } else if (dir == 1) {
+      this.balldir = [-1, 1];
+    } else if (dir == 2) {
+      this.balldir = [1, -1];
+    } else if (dir == 3) {
+      this.balldir = [1, 1];
+    }
+    return [this.get_obs(), this.get_info()];
+  }
+  render() {
+    let text = "";
+    for (let y = 0;y < 11; y++) {
+      let linea = "";
+      for (let x = 0;x < 11; x++) {
+        if (x == this.ball[0] && y == this.ball[1]) {
+          linea += "\u26AA";
+        } else if (x == this.player1[0] && (y == this.player1[1] || y == this.player1[1] + 1 || y == this.player1[1] - 1) || x == this.player2[0] && (y == this.player2[1] || y == this.player2[1] + 1 || y == this.player2[1] - 1)) {
+          linea += "\u2B1C";
+        } else {
+          linea += "\u2B1B";
+        }
+      }
+      text += linea + "\n";
+    }
+    console.log(text);
+  }
+}
+var Pong_default = Pong;
 export {
   _2048_default as TwoThousandfortyeight,
   TicTacToe_default as TicTacToe,
   Snake_default as Snake,
   Rubik_default as Rubik,
+  Pong_default as Pong,
   Frozenlake_default as Frozenlake,
   Fourinarow_default as Fourinarow
 };
