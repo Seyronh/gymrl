@@ -1,4 +1,4 @@
-import Rubik from '../src/Envs/Rubik.js'
+import {Rubik} from '../dist/index.js'
 import {expect, test,beforeEach} from "bun:test";
 
 let game;

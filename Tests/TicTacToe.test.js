@@ -1,4 +1,4 @@
-import TicTacToe from '../src/Envs/TicTacToe.js'
+import {TicTacToe} from '../dist/index.js'
 import {expect, test,beforeEach} from "bun:test";
 
 let game;

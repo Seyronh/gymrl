@@ -1,4 +1,4 @@
-import Pong from '../src/Envs/Pong.js'
+import {Pong} from '../dist/index.js'
 import {expect, test,beforeEach} from "bun:test";
 
 let game
