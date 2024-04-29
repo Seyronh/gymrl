@@ -153,7 +153,7 @@ class Pong {
         return [this.get_obs(),this.get_info()]
     }
 /**
- * Renders the current state of the Tic-Tac-Toe board to the console.
+ * Renders the current match state to the console.
  *
  * @return {void} This function does not return a value.
  */
