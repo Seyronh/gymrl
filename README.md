@@ -28,6 +28,8 @@ GymRL currently supports the following environments:
 3. Frozenlake
 4. Snake
 5. TicTacToe
+6. Rubik
+7. Pong
 
 You can import an environment as follows:
 
