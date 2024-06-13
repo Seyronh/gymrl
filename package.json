@@ -10,7 +10,8 @@
   "repository": "https://github.com/Seyronh/gymrl",
   "scripts": {
     "build": "bun build ./src/index.js --outdir ./dist",
-    "test": "bun test"
+    "test": "bun test",
+    "benchmark":"bun run ./Benchmarks/main.js"
   },
   "files": [
     "LICENSE",

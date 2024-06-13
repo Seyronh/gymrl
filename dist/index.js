@@ -1169,7 +1169,7 @@ class Snake {
     }
     result += "\u2599" + "\u2582".repeat(this.size) + `\u259F
 `;
-    console.log(result);
+    process.stdout.write(result);
   }
 }
 var Snake_default = Snake;

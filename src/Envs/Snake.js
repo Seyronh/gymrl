@@ -208,7 +208,7 @@ class Snake {
             result += linea + "\n";
         }
         result += "▙"+"▂".repeat(this.size)+"▟\n"; 
-        console.log(result)
+        process.stdout.write(result)
     }
 }
 export default Snake;
