@@ -173,7 +173,7 @@ class Frozenlake {
                 line += "P"
             } else {
                 let representation = ['S','F','H','G']
-                lina += representation[this.state[i]]
+                line += representation[this.state[i]]
             }
         }
         console.log(line)

@@ -1,4 +1,4 @@
-import {Snake} from '../dist';
+import {Snake} from '../../dist';
 class SnakeBenchmark {
     static run(Times){
         const Benchmark = new SnakeBenchmark();
@@ -12,18 +12,7 @@ class SnakeBenchmark {
            }
            dataArray.push(data);
         }
-        let keys = Object.keys(dataArray[0]);
-        console.log(`${this.name} results times: ${Times}`)
-        let object = {};
-        for(let i = 0;i<keys.length;i++){
-            const key = keys[i];
-            let maped = dataArray.map(e => e[key]);
-            let min = Math.min(...maped);
-            let avg = maped.reduce((a,b) => a+b)/maped.length;
-            let max = Math.max(...maped);
-            object[key] = {min:min,avg:avg,max:max}
-        }
-        console.table(object)
+        return dataArray;
     }
     constructor(){
         this.game = new Snake();
