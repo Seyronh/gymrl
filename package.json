@@ -9,9 +9,9 @@
   },
   "repository": "https://github.com/Seyronh/gymrl",
   "scripts": {
-    "build": "bun build ./src/index.js --outdir ./dist",
+    "build": "bun build ./src/index.js --outdir ./dist --production --sourcemap --packages external",
     "test": "bun test",
-    "benchmark":"bun run ./Benchmarks/main.js"
+    "benchmark": "bun run ./Benchmarks/main.js"
   },
   "files": [
     "LICENSE",
