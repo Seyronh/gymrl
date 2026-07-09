@@ -11,7 +11,10 @@
   "scripts": {
     "build": "bun build ./src/index.js --outdir ./dist --production --sourcemap --packages external",
     "test": "bun test",
-    "benchmark": "bun run ./Benchmarks/main.js"
+    "benchmark": "bun run ./Benchmarks/main.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix && prettier --write .",
+    "prepare": "lint-staged"
   },
   "files": [
     "LICENSE",
@@ -33,5 +36,26 @@
   "dependencies": {
     "2048game": "^1.0.9",
     "four-in-a-row": "^1.0.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@eslint/markdown": "^8.0.3",
+    "@types/bun": "latest",
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
+    "prettier": "^3.9.5",
+    "typescript-eslint": "^8.63.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{ts,js}": "eslint --cache --fix",
+    "*.{ts,js,css,md}": "prettier --write",
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
