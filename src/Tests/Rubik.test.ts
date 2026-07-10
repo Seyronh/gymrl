@@ -1,13 +1,14 @@
+import type { RubikGame } from "../Games/index.ts";
 import { Rubik } from "../index.ts";
 import { expect, test, beforeEach } from "bun:test";
 
 type RubikTest = Omit<Rubik, "state"> & {
-  state: number[][];
+  game: RubikGame;
 };
-let game: RubikTest;
+let cube: RubikTest;
 beforeEach(() => {
-  game = new Rubik(10) as unknown as RubikTest;
-  game.state = [
+  cube = new Rubik(10) as unknown as RubikTest;
+  cube.game.state = [
     [
       0,
       0,
@@ -78,20 +79,20 @@ beforeEach(() => {
 });
 
 test("Constructor", () => {
-  expect(game).toHaveProperty("stepsTaken", 0);
-  expect(game).toHaveProperty("moves", 10);
+  expect(cube.game).toHaveProperty("stepsTaken", 0);
+  expect(cube.game).toHaveProperty("moves", 10);
 });
 
 test("SampleAction", () => {
   for (let i = 0; i < 20; i++) {
-    const action = game.sampleAction();
+    const action = cube.sampleAction();
     expect(action).toBeLessThan(12);
     expect(action).toBeGreaterThanOrEqual(0);
   }
 });
 test("StepU", () => {
-  game.step(0);
-  expect(game).toHaveProperty("state", [
+  cube.step(0);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -161,8 +162,8 @@ test("StepU", () => {
   ]);
 });
 test("StepU'", () => {
-  game.step(1);
-  expect(game).toHaveProperty("state", [
+  cube.step(1);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -232,8 +233,8 @@ test("StepU'", () => {
   ]);
 });
 test("StepD", () => {
-  game.step(2);
-  expect(game).toHaveProperty("state", [
+  cube.step(2);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -303,8 +304,8 @@ test("StepD", () => {
   ]);
 });
 test("StepD'", () => {
-  game.step(3);
-  expect(game).toHaveProperty("state", [
+  cube.step(3);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -374,8 +375,8 @@ test("StepD'", () => {
   ]);
 });
 test("StepR", () => {
-  game.step(4);
-  expect(game).toHaveProperty("state", [
+  cube.step(4);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -445,8 +446,8 @@ test("StepR", () => {
   ]);
 });
 test("StepR'", () => {
-  game.step(5);
-  expect(game).toHaveProperty("state", [
+  cube.step(5);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -516,8 +517,8 @@ test("StepR'", () => {
   ]);
 });
 test("StepL", () => {
-  game.step(6);
-  expect(game).toHaveProperty("state", [
+  cube.step(6);
+  expect(cube.game).toHaveProperty("state", [
     [
       4,
       0,
@@ -587,8 +588,8 @@ test("StepL", () => {
   ]);
 });
 test("StepL'", () => {
-  game.step(7);
-  expect(game).toHaveProperty("state", [
+  cube.step(7);
+  expect(cube.game).toHaveProperty("state", [
     [
       2,
       0,
@@ -658,8 +659,8 @@ test("StepL'", () => {
   ]);
 });
 test("StepF", () => {
-  game.step(8);
-  expect(game).toHaveProperty("state", [
+  cube.step(8);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -729,8 +730,8 @@ test("StepF", () => {
   ]);
 });
 test("StepF'", () => {
-  game.step(9);
-  expect(game).toHaveProperty("state", [
+  cube.step(9);
+  expect(cube.game).toHaveProperty("state", [
     [
       0,
       0,
@@ -800,8 +801,8 @@ test("StepF'", () => {
   ]);
 });
 test("StepB", () => {
-  game.step(10);
-  expect(game).toHaveProperty("state", [
+  cube.step(10);
+  expect(cube.game).toHaveProperty("state", [
     [
       3,
       3,
@@ -871,8 +872,8 @@ test("StepB", () => {
   ]);
 });
 test("StepB'", () => {
-  game.step(11);
-  expect(game).toHaveProperty("state", [
+  cube.step(11);
+  expect(cube.game).toHaveProperty("state", [
     [
       1,
       1,
