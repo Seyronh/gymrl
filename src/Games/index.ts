@@ -1,2 +1,3 @@
 import { RubikGame } from "./Rubik";
-export { RubikGame };
+import { SnakeGame } from "./Snake";
+export { RubikGame, SnakeGame };
