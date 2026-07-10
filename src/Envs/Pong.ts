@@ -14,7 +14,6 @@ class Pong extends Env {
   constructor(player: boolean, difficulty = 0.2) {
     super([6], 3);
 
-    this.action_size = 3;
     this.player = player ? 1 : 0;
     this.difficulty = difficulty;
     this.reset();
