@@ -1,4 +1,4 @@
-import { TicTacToe } from "../src/index.ts";
+import { TicTacToe } from "../index.ts";
 import { expect, test, beforeEach } from "bun:test";
 
 let game: TicTacToe;

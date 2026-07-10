@@ -1,4 +1,4 @@
-import { Pong } from "../src/index.ts";
+import { Pong } from "../index.ts";
 import { expect, test, beforeEach } from "bun:test";
 
 type PongTest = Omit<Pong, "balldir" | "ball"> & {

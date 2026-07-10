@@ -1,4 +1,4 @@
-import { Rubik } from "../src/index.ts";
+import { Rubik } from "../index.ts";
 import { expect, test, beforeEach } from "bun:test";
 
 type RubikTest = Omit<Rubik, "state"> & {
