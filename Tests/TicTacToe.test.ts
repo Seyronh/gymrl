@@ -1,7 +1,7 @@
-import { TicTacToe } from "../dist/index.js";
+import { TicTacToe } from "../src/index.ts";
 import { expect, test, beforeEach } from "bun:test";
 
-let game;
+let game: TicTacToe;
 beforeEach(() => {
   game = new TicTacToe(false);
 });
@@ -20,7 +20,7 @@ test("Constructor", () => {
 
 test("SampleAction", () => {
   for (let i = 0; i < 20; i++) {
-    let action = game.sampleAction();
+    const action = game.sampleAction();
     expect(action).toBeLessThan(9);
     expect(action).toBeGreaterThanOrEqual(0);
   }
@@ -28,7 +28,7 @@ test("SampleAction", () => {
 test("StepBlank", () => {
   for (let i = 0; i < 9; i++) {
     game = new TicTacToe(false);
-    let stepinfo = game.step(i);
+    const stepinfo = game.step(i);
     expect(stepinfo[2]).toBe(false);
     expect(game).toHaveProperty("state", [
       [i == 0 ? 1 : 0, i == 1 ? 1 : 0, i == 2 ? 1 : 0],
@@ -40,7 +40,7 @@ test("StepBlank", () => {
 test("StepTaken", () => {
   for (let i = 0; i < 9; i++) {
     game = new TicTacToe(false);
-    let stepinfo = game.step(i);
+    const stepinfo = game.step(i);
     expect(stepinfo[2]).toBe(false);
     game.step(i);
     expect(game).toHaveProperty("state", [
@@ -51,8 +51,8 @@ test("StepTaken", () => {
   }
 });
 test("Reset", () => {
-  let i = game.sampleAction();
-  let stepinfo = game.step(i);
+  const i = game.sampleAction();
+  const stepinfo = game.step(i);
   expect(stepinfo[2]).toBe(false);
   game.reset();
   expect(game).toHaveProperty("state", [

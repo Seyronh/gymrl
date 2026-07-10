@@ -1,9 +1,12 @@
-import { Rubik } from "../dist/index.js";
+import { Rubik } from "../src/index.ts";
 import { expect, test, beforeEach } from "bun:test";
 
-let game;
+type RubikTest = Omit<Rubik, "state"> & {
+  state: number[][];
+};
+let game: RubikTest;
 beforeEach(() => {
-  game = new Rubik(10);
+  game = new Rubik(10) as unknown as RubikTest;
   game.state = [
     [
       0,
@@ -81,7 +84,7 @@ test("Constructor", () => {
 
 test("SampleAction", () => {
   for (let i = 0; i < 20; i++) {
-    let action = game.sampleAction();
+    const action = game.sampleAction();
     expect(action).toBeLessThan(12);
     expect(action).toBeGreaterThanOrEqual(0);
   }
