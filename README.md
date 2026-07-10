@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/gymrl?style=flat-square)
 ![Author](https://img.shields.io/badge/Author-Seyronh-red?logo=npm)
 
-GymRL is a package that provides various environments for reinforcement learning. 
+GymRL is a package that provides various environments for reinforcement learning.
 
 ## Prerequisites
 
@@ -34,18 +34,19 @@ GymRL currently supports the following environments:
 You can import an environment as follows:
 
 ```js
-const {Snake} = require("gymrl")
+const { Snake } = require("gymrl");
 ```
+
 ```js
-const {TwoThousandfortyeight} = require("gymrl")
+const { TwoThousandfortyeight } = require("gymrl");
 ```
 
 ## Usage
 
 Here is an example of how to use the Snake environment:
 
-```js 
-const {Snake} = require("gymrl")
+```js
+const { Snake } = require("gymrl");
 
 let match = new Snake(10); // This creates a map of 10x10
 let score = 0;
@@ -55,15 +56,15 @@ match.render();
 
 let status = match.get_obs();
 
-while(!done){
-    let randomAction = Snake.sampleAction();
-    let Stepinfo = match.step(randomAction);
-    status = Stepinfo[0];
-    let reward = Stepinfo[1];
-    done = Stepinfo[2];
-    let info = Stepinfo[3];
-    score += reward;
-    match.render();
+while (!done) {
+  let randomAction = Snake.sampleAction();
+  let Stepinfo = match.step(randomAction);
+  status = Stepinfo[0];
+  let reward = Stepinfo[1];
+  done = Stepinfo[2];
+  let info = Stepinfo[3];
+  score += reward;
+  match.render();
 }
 ```
 
@@ -76,7 +77,7 @@ The following methods are available in all environments:
 - **get_obs()**: Returns the current observations of the environment.
 - **get_info()**: Returns additional information about the observations of the environment.
 - **reset()**: Resets the environment.
-- **step(action)**: Performs one step in the environment using the specified action and returns an array with four entries: [newStatus, Reward, Done, Info].
+- **step(action)**: Performs one step in the environment using the specified action and returns an array with four entries: \[newStatus, Reward, Done, Info\].
 
 ## More Info About the Environments
 
