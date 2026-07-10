@@ -14,3 +14,4 @@ export {
   Rubik,
   Pong,
 };
+export type { Env, Observation, Reward, Done, Info } from "./Env.js";

@@ -3,15 +3,16 @@
   "version": "1.2.17",
   "description": "OpenAI style Gym for javascript",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "homepage": "https://github.com/Seyronh/gymrl#readme",
   "bugs": {
     "url": "https://github.com/Seyronh/gymrl/issues"
   },
   "repository": "https://github.com/Seyronh/gymrl",
   "scripts": {
-    "build": "bun build ./src/index.js --outdir ./dist --production --sourcemap --packages external",
+    "build": "bun build ./src/index.js --outdir ./dist --production --sourcemap --packages external && bun run build:declaration",
+    "build:declaration": "tsc --project tsconfig.json",
     "test": "bun test",
-    "benchmark": "bun run ./Benchmarks/main.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "prepare": "lint-staged"
