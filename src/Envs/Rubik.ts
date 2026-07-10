@@ -9,6 +9,7 @@ enum RubikColors {
   BLUE = 4,
   YELLOW = 5,
 }
+
 type RubikState = [
   [
     RubikColors,
@@ -113,8 +114,8 @@ function rotateMatrixCounterClockwise(
   return copy;
 }
 
-class Rubik extends Env {
-  private state: RubikState = [
+function createSolvedRubikState(): RubikState {
+  return [
     [
       RubikColors.WHITE,
       RubikColors.WHITE,
@@ -182,6 +183,12 @@ class Rubik extends Env {
       RubikColors.YELLOW,
     ],
   ];
+}
+
+const RubikColorsEmojis = ["⬜", "🟧", "🟩", "🟥", "🟦", "🟨"];
+
+class Rubik extends Env {
+  private state: RubikState = createSolvedRubikState();
   private moves: number;
   private stepsTaken: number = 0;
   /**
@@ -235,166 +242,96 @@ class Rubik extends Env {
           copy[face]![pos] = this.state[face + 1 == 5 ? 1 : face + 1]![pos]!;
         }
       }
-    } else if (action == 4) {
-      //R
-      //RIGHT
-      copy[3] = rotateMatrixClockwise(copy[3]!);
-      //Other faces
-      copy[0]![2] = this.state[2]![2]!;
-      copy[0]![5] = this.state[2]![5]!;
-      copy[0]![8] = this.state[2]![8]!;
-
-      copy[2]![2] = this.state[5]![2]!;
-      copy[2]![5] = this.state[5]![5]!;
-      copy[2]![8] = this.state[5]![8]!;
-
-      copy[4]![0] = this.state[0]![2]!;
-      copy[4]![3] = this.state[0]![5]!;
-      copy[4]![6] = this.state[0]![8]!;
-
-      copy[5]![2] = this.state[4]![0]!;
-      copy[5]![5] = this.state[4]![3]!;
-      copy[5]![8] = this.state[4]![6]!;
-    } else if (action == 5) {
-      //R'
-      //RIGHT
-      copy[3] = rotateMatrixCounterClockwise(copy[3]!);
-      //Other faces
-      copy[0]![2] = this.state[4]![0]!;
-      copy[0]![5] = this.state[4]![3]!;
-      copy[0]![8] = this.state[4]![6]!;
-
-      copy[2]![2] = this.state[0]![2]!;
-      copy[2]![5] = this.state[0]![5]!;
-      copy[2]![8] = this.state[0]![8]!;
-
-      copy[4]![0] = this.state[5]![2]!;
-      copy[4]![3] = this.state[5]![5]!;
-      copy[4]![6] = this.state[5]![8]!;
-
-      copy[5]![2] = this.state[2]![0]!;
-      copy[5]![5] = this.state[2]![3]!;
-      copy[5]![8] = this.state[2]![6]!;
-    } else if (action == 6) {
-      //L
-      //LEFT
-      copy[1] = rotateMatrixClockwise(copy[1]!);
-      //Other faces
-      copy[0]![0] = this.state[4]![2]!;
-      copy[0]![3] = this.state[4]![5]!;
-      copy[0]![6] = this.state[4]![8]!;
-
-      copy[2]![0] = this.state[0]![0]!;
-      copy[2]![3] = this.state[0]![3]!;
-      copy[2]![6] = this.state[0]![6]!;
-
-      copy[4]![2] = this.state[5]![0]!;
-      copy[4]![5] = this.state[5]![3]!;
-      copy[4]![8] = this.state[5]![6]!;
-
-      copy[5]![0] = this.state[2]![0]!;
-      copy[5]![3] = this.state[2]![3]!;
-      copy[5]![6] = this.state[2]![6]!;
-    } else if (action == 7) {
-      //L'
-      //Left
-      copy[1] = rotateMatrixCounterClockwise(copy[1]!);
-      //Other faces
-      copy[0]![0] = this.state[2]![2]!;
-      copy[0]![3] = this.state[2]![5]!;
-      copy[0]![6] = this.state[2]![8]!;
-
-      copy[2]![0] = this.state[5]![2]!;
-      copy[2]![3] = this.state[5]![5]!;
-      copy[2]![6] = this.state[5]![8]!;
-
-      copy[4]![2] = this.state[0]![2]!;
-      copy[4]![5] = this.state[0]![5]!;
-      copy[4]![8] = this.state[0]![8]!;
-
-      copy[5]![0] = this.state[4]![0]!;
-      copy[5]![3] = this.state[4]![3]!;
-      copy[5]![6] = this.state[4]![6]!;
-    } else if (action == 8) {
-      //F
-      //Front
-      copy[2] = rotateMatrixClockwise(copy[2]!);
-      //Other faces
-      copy[0]![6] = this.state[1]![2]!;
-      copy[0]![7] = this.state[1]![5]!;
-      copy[0]![8] = this.state[1]![8]!;
-
-      copy[3]![0] = this.state[0]![6]!;
-      copy[3]![3] = this.state[0]![7]!;
-      copy[3]![6] = this.state[0]![8]!;
-
-      copy[5]![0] = this.state[3]![0]!;
-      copy[5]![1] = this.state[3]![3]!;
-      copy[5]![2] = this.state[3]![6]!;
-
-      copy[1]![2] = this.state[5]![0]!;
-      copy[1]![5] = this.state[5]![1]!;
-      copy[1]![8] = this.state[5]![2]!;
-    } else if (action == 9) {
-      //F'
-      //Front
-      copy[2] = rotateMatrixCounterClockwise(copy[2]!);
-      //Other faces
-      copy[0]![6] = this.state[3]![0]!;
-      copy[0]![7] = this.state[3]![3]!;
-      copy[0]![8] = this.state[3]![6]!;
-
-      copy[3]![0] = this.state[5]![0]!;
-      copy[3]![3] = this.state[5]![1]!;
-      copy[3]![6] = this.state[5]![2]!;
-
-      copy[5]![0] = this.state[1]![2]!;
-      copy[5]![1] = this.state[1]![5]!;
-      copy[5]![2] = this.state[1]![8]!;
-
-      copy[1]![2] = this.state[0]![6]!;
-      copy[1]![5] = this.state[0]![7]!;
-      copy[1]![8] = this.state[0]![8]!;
-    } else if (action == 10) {
-      //B
-      //Back
-      copy[4] = rotateMatrixClockwise(copy[4]!);
-      //Other faces
-      copy[0]![0] = this.state[3]![2]!;
-      copy[0]![1] = this.state[3]![5]!;
-      copy[0]![2] = this.state[3]![8]!;
-
-      copy[3]![2] = this.state[5]![6]!;
-      copy[3]![5] = this.state[5]![7]!;
-      copy[3]![8] = this.state[5]![8]!;
-
-      copy[5]![6] = this.state[1]![0]!;
-      copy[5]![7] = this.state[1]![3];
-      copy[5]![8] = this.state[1]![6];
-
-      copy[1]![0] = this.state[0]![0];
-      copy[1]![3] = this.state[0]![1];
-      copy[1]![6] = this.state[0]![2];
-    } else if (action == 11) {
-      //B'
-      //Back
-      copy[4] = rotateMatrixCounterClockwise(copy[4]!);
-      //Other faces
-      copy[0]![0] = this.state[1]![0];
-      copy[0]![1] = this.state[1]![3];
-      copy[0]![2] = this.state[1]![6];
-
-      copy[3]![2] = this.state[0]![0];
-      copy[3]![5] = this.state[0]![1];
-      copy[3]![8] = this.state[0]![2];
-
-      copy[5]![6] = this.state[3]![2];
-      copy[5]![7] = this.state[3]![5];
-      copy[5]![8] = this.state[3]![8];
-
-      copy[1]![0] = this.state[5]![6];
-      copy[1]![3] = this.state[5]![7];
-      copy[1]![6] = this.state[5]![8];
+    } else {
+      let faces: number[] = [];
+      let positions: number[][] = [];
+      if (action === 4) {
+        copy[3] = rotateMatrixClockwise(copy[3]!);
+        faces = [0, 2, 5, 4];
+        positions = [
+          [2, 5, 8],
+          [2, 5, 8],
+          [2, 5, 8],
+          [0, 3, 6],
+        ];
+      } else if (action === 5) {
+        copy[3] = rotateMatrixCounterClockwise(copy[3]!);
+        faces = [0, 4, 5, 2];
+        positions = [
+          [2, 5, 8],
+          [0, 3, 6],
+          [2, 5, 8],
+          [2, 5, 8],
+        ];
+      } else if (action === 6) {
+        copy[1] = rotateMatrixClockwise(copy[1]!);
+        faces = [0, 4, 5, 2];
+        positions = [
+          [0, 3, 6],
+          [2, 5, 8],
+          [0, 3, 6],
+          [0, 3, 6],
+        ];
+      } else if (action === 7) {
+        copy[1] = rotateMatrixCounterClockwise(copy[1]!);
+        faces = [0, 2, 5, 4];
+        positions = [
+          [0, 3, 6],
+          [0, 3, 6],
+          [0, 3, 6],
+          [2, 5, 8],
+        ];
+      } else if (action === 8) {
+        copy[2] = rotateMatrixClockwise(copy[2]!);
+        faces = [0, 1, 5, 3];
+        positions = [
+          [6, 7, 8],
+          [2, 5, 8],
+          [0, 1, 2],
+          [0, 3, 6],
+        ];
+      } else if (action === 9) {
+        //F'
+        //Front
+        copy[2] = rotateMatrixCounterClockwise(copy[2]!);
+        faces = [0, 3, 5, 1];
+        positions = [
+          [6, 7, 8],
+          [0, 3, 6],
+          [0, 1, 2],
+          [2, 5, 8],
+        ];
+      } else if (action === 10) {
+        //B
+        //Back
+        copy[4] = rotateMatrixClockwise(copy[4]!);
+        faces = [0, 3, 5, 1];
+        positions = [
+          [0, 1, 2],
+          [2, 5, 8],
+          [6, 7, 8],
+          [0, 3, 6],
+        ];
+      } else if (action === 11) {
+        //B'
+        //Back
+        copy[4] = rotateMatrixCounterClockwise(copy[4]!);
+        faces = [0, 1, 5, 3];
+        positions = [
+          [0, 1, 2],
+          [0, 3, 6],
+          [6, 7, 8],
+          [2, 5, 8],
+        ];
+      }
+      for (let face = 0; face < 4; face++) {
+        for (let pos = 0; pos < positions[face]!.length; pos++) {
+          copy[faces[face]!]![positions[face]![pos]!] =
+            this.state[faces[(face + 1) % faces.length]!]![
+              positions[(face + 1) % faces.length]![pos]!
+            ]!;
+        }
+      }
     }
     this.state = copy.map((arr) => arr.slice()) as RubikState;
   }
@@ -411,7 +348,7 @@ class Rubik extends Env {
     let reward = 0;
     const correctfaces = this.state
       .map((rowArr, index) => {
-        return rowArr.every((val) => val == rowArr[index]);
+        return rowArr.every((val) => val === rowArr[index]);
       })
       .filter((e) => e == true).length;
     let done = correctfaces == 6;
@@ -448,74 +385,7 @@ class Rubik extends Env {
    */
   reset(): [Observation, Info] {
     this.stepsTaken = 0;
-    this.state = [
-      [
-        RubikColors.WHITE,
-        RubikColors.WHITE,
-        RubikColors.WHITE,
-        RubikColors.WHITE,
-        RubikColors.WHITE, //UP
-        RubikColors.WHITE,
-        RubikColors.WHITE,
-        RubikColors.WHITE,
-        RubikColors.WHITE,
-      ],
-      [
-        RubikColors.ORANGE,
-        RubikColors.ORANGE,
-        RubikColors.ORANGE,
-        RubikColors.ORANGE,
-        RubikColors.ORANGE,
-        RubikColors.ORANGE, //LEFT
-        RubikColors.ORANGE,
-        RubikColors.ORANGE,
-        RubikColors.ORANGE,
-      ],
-      [
-        RubikColors.GREEN,
-        RubikColors.GREEN,
-        RubikColors.GREEN,
-        RubikColors.GREEN,
-        RubikColors.GREEN,
-        RubikColors.GREEN, //FRONT
-        RubikColors.GREEN,
-        RubikColors.GREEN,
-        RubikColors.GREEN,
-      ],
-      [
-        RubikColors.RED,
-        RubikColors.RED,
-        RubikColors.RED,
-        RubikColors.RED,
-        RubikColors.RED,
-        RubikColors.RED, //RIGHT
-        RubikColors.RED,
-        RubikColors.RED,
-        RubikColors.RED,
-      ],
-      [
-        RubikColors.BLUE,
-        RubikColors.BLUE,
-        RubikColors.BLUE,
-        RubikColors.BLUE,
-        RubikColors.BLUE,
-        RubikColors.BLUE, //BACK
-        RubikColors.BLUE,
-        RubikColors.BLUE,
-        RubikColors.BLUE,
-      ],
-      [
-        RubikColors.YELLOW,
-        RubikColors.YELLOW,
-        RubikColors.YELLOW,
-        RubikColors.YELLOW,
-        RubikColors.YELLOW,
-        RubikColors.YELLOW,
-        RubikColors.YELLOW, //DOWN
-        RubikColors.YELLOW,
-        RubikColors.YELLOW,
-      ],
-    ];
+    this.state = createSolvedRubikState();
     for (let i = 0; i < this.moves; i++) {
       this.step(this.sampleAction());
       this.stepsTaken--;
@@ -529,19 +399,7 @@ class Rubik extends Env {
    */
   render() {
     const repState = this.state.map((Y) => {
-      return Y.map((x) => {
-        if (x == 0) {
-          return "⬜";
-        } else if (x == 1) {
-          return "🟧";
-        } else if (x == 2) {
-          return "🟩";
-        } else if (x == 3) {
-          return "🟥";
-        } else if (x == 4) {
-          return "🟦";
-        } else return "🟨";
-      });
+      return Y.map((x) => RubikColorsEmojis[x]);
     });
 
     console.log(
