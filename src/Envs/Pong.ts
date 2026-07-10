@@ -19,14 +19,6 @@ class Pong extends Env {
     this.reset();
   }
   /**
-   * Generates a random action between 0 and 1 for the pong match.
-   *
-   * @return {number} The randomly selected action.
-   */
-  sampleAction() {
-    return Math.floor(Math.random() * 3);
-  }
-  /**
    * Executes a step in the pong match based on the given action.
    *
    * @param {number} action - The action to be taken in the game.

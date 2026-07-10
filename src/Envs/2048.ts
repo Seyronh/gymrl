@@ -18,14 +18,6 @@ class TwoThousandfortyeight extends Env {
     this.reset();
   }
   /**
-   * Generates a random action between 0 and 3.
-   *
-   * @return {number} The randomly selected action.
-   */
-  sampleAction(): number {
-    return Math.floor(Math.random() * 4);
-  }
-  /**
    * Executes a step in the game based on the given action.
    *
    * @param {number} action - The action to be taken in the game.

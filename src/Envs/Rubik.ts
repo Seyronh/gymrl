@@ -192,14 +192,6 @@ class Rubik extends Env {
     this.moves = moves;
     this.reset();
   }
-  /**
-   * Generates a random action between 0 and 11 for the Rubik Cube game.
-   *
-   * @return {number} The randomly selected action.
-   */
-  sampleAction() {
-    return Math.floor(Math.random() * 12);
-  }
 
   private execute(action: number) {
     const copy = this.state.map((arr) => arr.slice());

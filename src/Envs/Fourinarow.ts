@@ -17,14 +17,6 @@ class Fourinarow extends Env {
     this.reset();
   }
   /**
-   * Generates a random action between 0 and 6.
-   *
-   * @return {number} The randomly selected action.
-   */
-  sampleAction(): number {
-    return Math.floor(Math.random() * 7);
-  }
-  /**
    * Executes a step based on the given action.
    *
    * @param {number} action - The action to be taken.

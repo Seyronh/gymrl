@@ -22,14 +22,6 @@ class Snake extends Env {
     this.reset();
   }
   /**
-   * Generates a random action between 0 and 3 for the Snake game.
-   *
-   * @return {number} The randomly selected action.
-   */
-  sampleAction(): number {
-    return Math.floor(Math.random() * 4);
-  }
-  /**
    * Executes a step in the Snake game based on the given action.
    *
    * @param {number} accion - The action to be taken in the game.

@@ -17,7 +17,9 @@ abstract class Env {
    *
    * @return {number} The randomly selected action.
    */
-  abstract sampleAction(): number;
+  sampleAction(): number {
+    return Math.floor(Math.random() * this.action_size);
+  }
   /**
    * Executes a step in the game based on the given action.
    *
