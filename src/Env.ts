@@ -6,8 +6,8 @@ type Done = boolean;
 type Reward = number;
 
 abstract class Env {
-  protected observation_shape: Array<number>;
-  protected action_size: number;
+  readonly observation_shape: Array<number>;
+  readonly action_size: number;
   constructor(observation_shape: Array<number> = [], action_size: number = 0) {
     this.observation_shape = observation_shape;
     this.action_size = action_size;
