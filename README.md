@@ -16,7 +16,7 @@ Before you begin, ensure you have met the following requirements:
 Install GymRL using npm:
 
 ```bash
-$ npm install gymrl --save
+$ npm install gymrl
 ```
 
 ## Environments
@@ -33,38 +33,39 @@ GymRL currently supports the following environments:
 
 You can import an environment as follows:
 
+### CommonJS
+
 ```js
 const { Snake } = require("gymrl");
 ```
 
+### ESM
+
 ```js
-const { TwoThousandfortyeight } = require("gymrl");
+import { TwoThousandfortyeight } from "gymrl";
 ```
 
 ## Usage
 
 Here is an example of how to use the Snake environment:
 
-```js
-const { Snake } = require("gymrl");
+```ts
+import { Snake } from "gymrl";
 
-let match = new Snake(10); // This creates a map of 10x10
+const match = new Snake(10); // This creates a map of 10x10
 let score = 0;
 let done = false;
 
 match.render();
 
-let status = match.get_obs();
-
 while (!done) {
-  let randomAction = Snake.sampleAction();
-  let Stepinfo = match.step(randomAction);
-  status = Stepinfo[0];
-  let reward = Stepinfo[1];
+  const randomAction = match.sampleAction();
+  const Stepinfo = match.step(randomAction);
+  const reward = Stepinfo[1];
   done = Stepinfo[2];
-  let info = Stepinfo[3];
   score += reward;
   match.render();
+  console.log(`Reward: ${reward}, Total Score: ${score}`);
 }
 ```
 
